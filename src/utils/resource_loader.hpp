@@ -1,0 +1,15 @@
+#pragma once
+#include <string>
+#include <entt/entt.hpp>
+#include <nlohmann/json.hpp>
+#include "../components/components.hpp"
+
+class ResourceLoader {
+public:
+    static bool load_config(const std::string& path, nlohmann::json& out_json);
+    static unsigned int load_texture(const std::string& path);
+    
+    // Helper to apply config to registry/game state?
+    // For now, just specific loaders
+};
+

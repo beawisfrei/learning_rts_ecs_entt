@@ -1,0 +1,82 @@
+{
+    "global": {
+        "screen_width": 1280,
+        "screen_height": 720,
+        "target_selection_interval": 1.0,
+        "unit_size": 2.0,
+        "tile_size": 1
+    },
+    "factions": [
+        { "id": 0, "color": [255, 0, 0, 255] },
+        { "id": 1, "color": [0, 0, 255, 255] },
+        { "id": 2, "color": [0, 255, 0, 255] },
+        { "id": 3, "color": [255, 255, 0, 255] },
+        { "id": 4, "color": [0, 255, 255, 255] },
+        { "id": 5, "color": [255, 0, 255, 255] },
+        { "id": 6, "color": [255, 255, 255, 255] },
+        { "id": 7, "color": [0, 0, 0, 255] }
+    ],
+    "atlas": {
+        "texture_width": 256,
+        "texture_height": 32,
+        "sprite_width": 32,
+        "sprite_height": 32
+    },
+    "units": [
+        {
+            "name": "footman",
+            "hp": 100,
+            "speed": 10.0,
+            "shield": 5,
+            "range": 1.5,
+            "attack_cooldown": 1.0,
+            "damage": 10,
+            "uv_x": 0.0,
+            "uv_y": 0.0,
+            "uv_w": 0.25,
+            "uv_h": 1.0
+        },
+        {
+            "name": "archer",
+            "hp": 60,
+            "speed": 12.0,
+            "shield": 2,
+            "range": 10.0,
+            "fire_rate": 0.5,
+            "attack_cooldown": 2.0,
+            "damage": 8,
+            "uv_x": 0.25,
+            "uv_y": 0.0,
+            "uv_w": 0.25,
+            "uv_h": 1.0
+        },
+        {
+            "name": "ballista",
+            "hp": 150,
+            "speed": 5.0,
+            "shield": 0,
+            "range": 15.0,
+            "fire_rate": 0.2,
+            "attack_cooldown": 5.0,
+            "damage": 50,
+            "damage_radius": 3.0,
+            "uv_x": 0.5,
+            "uv_y": 0.0,
+            "uv_w": 0.25,
+            "uv_h": 1.0
+        },
+        {
+            "name": "healer",
+            "hp": 50,
+            "speed": 10.0,
+            "shield": 0,
+            "heal_cooldown": 2.0,
+            "heal_range": 5.0,
+            "heal_amount": 10,
+            "uv_x": 0.75,
+            "uv_y": 0.0,
+            "uv_w": 0.25,
+            "uv_h": 1.0
+        }
+    ]
+}

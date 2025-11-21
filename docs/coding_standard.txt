@@ -1,0 +1,5 @@
+* Files should be named snake_case
+* Use tabs
+* Private and protected fields should be: _privateField;
+* Public fields should be: publicField;
+* Class & Structure names: ClassName
