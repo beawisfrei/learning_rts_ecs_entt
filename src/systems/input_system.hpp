@@ -25,12 +25,14 @@ public:
 
 private:
 	Vec2 screen_to_world(float screen_x, float screen_y, const Camera& camera, int screen_width, int screen_height);
+	void issue_move_command(entt::registry& registry, const Vec2& click_world_pos);
 	
     bool _left_mouse_down = false;
     bool _right_mouse_down = false;
     bool _space_down = false;
 	bool _s_down = false;
 	bool _d_down = false;
+	bool _m_down = false;
 	
     float _mouse_x = 0.0f;
     float _mouse_y = 0.0f;

@@ -1,19 +1,19 @@
 #pragma once
 
 #include "../components/components.hpp"
+#include "vec2.hpp"
 #include <cmath>
 
 namespace MathUtils {
 	// Calculate distance between two Vec2 points
 	inline float distance(const Vec2& a, const Vec2& b) {
-		float dx = b.x - a.x;
-		float dy = b.y - a.y;
-		return std::sqrt(dx * dx + dy * dy);
+		Vec2 diff = b - a;
+		return std::sqrt(dot(diff, diff));
 	}
 
 	// Calculate length of a Vec2 vector
 	inline float length(const Vec2& v) {
-		return std::sqrt(v.x * v.x + v.y * v.y);
+		return std::sqrt(dot(v, v));
 	}
 
 	// Normalize a Vec2 vector
@@ -22,12 +22,12 @@ namespace MathUtils {
 		if (len < 0.0001f) {
 			return Vec2{0.0f, 0.0f};
 		}
-		return Vec2{v.x / len, v.y / len};
+		return v / len;
 	}
 
 	// Get direction from point a to point b
 	inline Vec2 direction_to(const Vec2& from, const Vec2& to) {
-		Vec2 dir = {to.x - from.x, to.y - from.y};
+		Vec2 dir = to - from;
 		return normalize(dir);
 	}
 

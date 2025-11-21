@@ -5,6 +5,8 @@
 #include "../utils/math_utils.hpp"
 #include <iostream>
 #include <cmath>
+#include <limits>
+#include <vector>
 
 void InputSystem::process_event(const SDL_Event& event) {
     if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
@@ -29,10 +31,12 @@ void InputSystem::process_event(const SDL_Event& event) {
         if (event.key.key == SDLK_SPACE) _space_down = true;
 		if (event.key.key == SDLK_S) _s_down = true;
 		if (event.key.key == SDLK_D) _d_down = true;
+		if (event.key.key == SDLK_M) _m_down = true;
     } else if (event.type == SDL_EVENT_KEY_UP) {
         if (event.key.key == SDLK_SPACE) _space_down = false;
 		if (event.key.key == SDLK_S) _s_down = false;
 		if (event.key.key == SDLK_D) _d_down = false;
+		if (event.key.key == SDLK_M) _m_down = false;
     } else if (event.type == SDL_EVENT_MOUSE_WHEEL) {
         // Handle Zoom...
     }
@@ -54,6 +58,54 @@ Vec2 InputSystem::screen_to_world(float screen_x, float screen_y, const Camera& 
 	return Vec2{world_x, world_y};
 }
 
+void InputSystem::issue_move_command(entt::registry& registry, const Vec2& click_world_pos) {
+	// Get all selected units
+	auto selected_view = registry.view<Selected, Position, Movement>();
+	
+	// Calculate bounding box of selected units
+	float min_x = std::numeric_limits<float>::max();
+	float max_x = std::numeric_limits<float>::lowest();
+	float min_y = std::numeric_limits<float>::max();
+	float max_y = std::numeric_limits<float>::lowest();
+	
+	std::vector<entt::entity> selected_units;
+	for (auto entity : selected_view) {
+		const auto& pos = selected_view.get<Position>(entity);
+		selected_units.push_back(entity);
+		
+		min_x = std::min(min_x, pos.value.x);
+		max_x = std::max(max_x, pos.value.x);
+		min_y = std::min(min_y, pos.value.y);
+		max_y = std::max(max_y, pos.value.y);
+	}
+	
+	// Early return if no units selected
+	if (selected_units.empty()) {
+		return;
+	}
+	
+	// Calculate center of bounding box
+	Vec2 bounding_box_center = {
+		(min_x + max_x) * 0.5f,
+		(min_y + max_y) * 0.5f
+	};
+	
+	// For each selected unit, calculate target position preserving formation
+	for (auto entity : selected_units) {
+		const auto& pos = selected_view.get<Position>(entity);
+		auto& movement = selected_view.get<Movement>(entity);
+		
+		// Calculate offset from bounding box center
+		Vec2 offset = pos.value - bounding_box_center;
+		
+		// Set target position = click position + offset
+		movement.target = click_world_pos + offset;
+		
+		// Set movement state to Moving
+		movement.state = MovementState::Moving;
+	}
+}
+
 void InputSystem::update(entt::registry& registry, SpatialGrid& spatial_grid, UnitFactory& unit_factory, float dt) {
     // Get Camera
     auto cam_view = registry.view<Camera, MainCamera>();
@@ -68,8 +120,7 @@ void InputSystem::update(entt::registry& registry, SpatialGrid& spatial_grid, Un
         if (_space_down && !_is_dragging) {
             float dx = _mouse_x - _last_mouse_x;
             float dy = _mouse_y - _last_mouse_y;
-            camera.offset.x -= dx / camera.zoom;
-            camera.offset.y += dy / camera.zoom;
+            camera.offset -= Vec2{dx / camera.zoom, -dy / camera.zoom};
 			cam_view.get<Camera>(entity) = camera;
         }
 		break;
@@ -81,9 +132,28 @@ void InputSystem::update(entt::registry& registry, SpatialGrid& spatial_grid, Un
 		_selection_end = screen_to_world(_mouse_x, _mouse_y, camera, screen_width, screen_height);
 	}
 	
-	// Handle mouse up - finalize selection/spawn/delete
+	// Handle mouse up - finalize selection/spawn/delete/move
 	static bool was_dragging = false;
+	static bool was_left_mouse_down = false;
+	
 	if (was_dragging && !_is_dragging) {
+		// Mouse was just released
+		
+		// Check for M + Click (move command) - only if it was a click, not a drag
+		if (_m_down) {
+			float drag_distance = MathUtils::distance(_drag_start_screen, Vec2{_mouse_x, _mouse_y});
+			// If drag distance is small, treat it as a click
+			if (drag_distance < 5.0f) {
+				Vec2 click_world_pos = screen_to_world(_mouse_x, _mouse_y, camera, screen_width, screen_height);
+				issue_move_command(registry, click_world_pos);
+				was_dragging = _is_dragging;
+				was_left_mouse_down = _left_mouse_down;
+				_last_mouse_x = _mouse_x;
+				_last_mouse_y = _mouse_y;
+				return;
+			}
+		}
+		
 		// Mouse was just released
 		Vec2 rect_min = {
 			std::min(_selection_start.x, _selection_end.x),
@@ -143,6 +213,7 @@ void InputSystem::update(entt::registry& registry, SpatialGrid& spatial_grid, Un
 		}
 	}
 	was_dragging = _is_dragging;
+	was_left_mouse_down = _left_mouse_down;
     
     _last_mouse_x = _mouse_x;
     _last_mouse_y = _mouse_y;

@@ -1,4 +1,6 @@
-* Сделать нормальный Vec2
+* Integrations tests
+* Использовать Tag Exclude Approach для движения
 * Нормально реализовать Spatial Grid
 * Нормально реализовать отрисовку
 * Сделатать так, чтобы Unit_factory не читала json каждый раз
+* Add Tracy support to see the perfromance

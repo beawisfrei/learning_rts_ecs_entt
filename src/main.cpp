@@ -214,8 +214,9 @@ int main(int argc, char* argv[]) {
 			
 			auto world_to_screen = [&](Vec2 world) -> ImVec2 {
 				// worldPos = (pos - offset) * zoom
-				float world_x = (world.x - cam.offset.x) * cam.zoom;
-				float world_y = (world.y - cam.offset.y) * cam.zoom;
+				Vec2 world_pos = (world - cam.offset) * cam.zoom;
+				float world_x = world_pos.x;
+				float world_y = world_pos.y;
 				
 				// ndc = worldPos / vec2(640, 360)
 				float ndc_x = world_x / 640.0f;

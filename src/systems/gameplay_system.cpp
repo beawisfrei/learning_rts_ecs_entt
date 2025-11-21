@@ -29,20 +29,17 @@ void GameplaySystem::update_movement(entt::registry& registry, float dt) {
 		Vec2 dir = MathUtils::direction_to(pos.value, movement.target);
 		
 		// Update velocity
-		movement.velocity.x = dir.x * movement.speed;
-		movement.velocity.y = dir.y * movement.speed;
+		movement.velocity = dir * movement.speed;
 		
 		// Update position
-		pos.value.x += movement.velocity.x * dt;
-		pos.value.y += movement.velocity.y * dt;
+		pos.value += movement.velocity * dt;
 		
 		// Check if reached target
 		float dist = MathUtils::distance(pos.value, movement.target);
 		if (dist < 0.5f) {
 			// Reached target, stop moving
 			movement.state = MovementState::NotMoving;
-			movement.velocity.x = 0.0f;
-			movement.velocity.y = 0.0f;
+			movement.velocity = Vec2{0.0f, 0.0f};
 		}
 	}
 }
