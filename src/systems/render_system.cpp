@@ -196,10 +196,24 @@ void RenderSystem::update(entt::registry& registry) {
 		if (factionIdx < 0 || factionIdx >= _faction_colors.size()) factionIdx = 0;
 
 		const auto& uv = _unitUVs[typeIdx];
-		const auto& color = _faction_colors[factionIdx];
+		Color color = _faction_colors[factionIdx];
+		
+		// Highlight selected units (make them brighter/white tint)
+		if (registry.all_of<Selected>(entity)) {
+			color.r = (color.r + 1.0f) * 0.5f; // Brighten
+			color.g = (color.g + 1.0f) * 0.5f;
+			color.b = (color.b + 1.0f) * 0.5f;
+		}
 
 		glUniform2f(objPosLoc, pos.value.x, pos.value.y);
-		glUniform2f(objScaleLoc, _unit_size, _unit_size);
+		
+		// Projectiles should be smaller
+		float size = _unit_size;
+		if (registry.all_of<Projectile>(entity)) {
+			size = _unit_size * 0.3f;
+		}
+		glUniform2f(objScaleLoc, size, size);
+		
 		// uUVRect: x, y, w, h
 		glUniform4f(uvRectLoc, uv.x, uv.y, uv.w, uv.h);
 		

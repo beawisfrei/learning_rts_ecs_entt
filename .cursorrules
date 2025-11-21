@@ -1,0 +1,21 @@
+# ECS RTS Project - Coding Standard
+
+When working on this C++ ECS RTS project, always follow these coding standards:
+
+## Naming Conventions
+- **Files**: snake_case (e.g., `gameplay_system.cpp`, `unit_factory.hpp`)
+- **Classes & Structures**: PascalCase (e.g., `GameplaySystem`, `RenderSystem`)
+- **Public Functions**: PascalCase (e.g., `Initialize()`, `Update()`, `GetPosition()`)
+- **Private Functions**: camelCase (e.g., `updateInternal()`, `calculateDistance()`)
+- **Public Fields**: camelCase (e.g., `position`, `velocity`)
+- **Private/Protected Fields**: _camelCase with underscore prefix (e.g., `_playerCount`, `_maxHealth`)
+
+## Formatting
+- Use **tabs** for indentation (not spaces)
+
+## When Writing or Modifying Code
+- Always apply these conventions consistently
+- When creating new files, use snake_case naming
+- When creating new classes, functions, or fields, follow the appropriate naming convention
+- Maintain tab-based indentation throughout
+

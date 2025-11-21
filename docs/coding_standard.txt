@@ -3,3 +3,5 @@
 * Private and protected fields should be: _privateField;
 * Public fields should be: publicField;
 * Class & Structure names: ClassName
+* Public Functions should be named lile: FunctionName 
+* Private functions should be named lile: functionName 
