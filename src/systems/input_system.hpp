@@ -21,6 +21,12 @@ public:
 		_spawn_faction = faction;
 		_spawn_count = count;
 	}
+	
+	// Set screen dimensions from config
+	void set_screen_dimensions(int width, int height) {
+		_screen_width = width;
+		_screen_height = height;
+	}
 
 private:
 	Vec2 screen_to_world(float screen_x, float screen_y, const Camera& camera, int screen_width, int screen_height);
@@ -48,4 +54,8 @@ private:
 	UnitType _spawn_type = UnitType::Footman;
 	int _spawn_faction = 0;
 	int _spawn_count = 10;
+	
+	// Screen dimensions
+	int _screen_width = 1280;
+	int _screen_height = 720;
 };

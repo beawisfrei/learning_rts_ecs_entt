@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <cereal/cereal.hpp>
 
 struct Vec2 {
 	float x, y;
@@ -62,6 +63,12 @@ struct Vec2 {
 
 	bool operator!=(const Vec2& other) const {
 		return x != other.x || y != other.y;
+	}
+
+	// Serialization for Cereal
+	template<class Archive>
+	void serialize(Archive &archive) {
+		archive(CEREAL_NVP(x), CEREAL_NVP(y));
 	}
 };
 

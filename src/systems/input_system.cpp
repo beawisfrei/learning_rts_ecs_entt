@@ -112,8 +112,6 @@ void InputSystem::update(World& world, float dt) {
     // Get Camera
     auto cam_view = registry.view<Camera, MainCamera>();
 	Camera camera = {Vec2{0.0f, 0.0f}, 1.0f};
-	int screen_width = 1280;
-	int screen_height = 720;
 	
 	for (auto entity : cam_view) {
         camera = cam_view.get<Camera>(entity);
@@ -130,8 +128,8 @@ void InputSystem::update(World& world, float dt) {
 	
 	// Update selection rect in world space
 	if (_is_dragging) {
-		_selection_start = screen_to_world(_drag_start_screen.x, _drag_start_screen.y, camera, screen_width, screen_height);
-		_selection_end = screen_to_world(_mouse_x, _mouse_y, camera, screen_width, screen_height);
+		_selection_start = screen_to_world(_drag_start_screen.x, _drag_start_screen.y, camera, _screen_width, _screen_height);
+		_selection_end = screen_to_world(_mouse_x, _mouse_y, camera, _screen_width, _screen_height);
 	}
 	
 	// Handle mouse up - finalize selection/spawn/delete/move
@@ -146,7 +144,7 @@ void InputSystem::update(World& world, float dt) {
 			float drag_distance = MathUtils::distance(_drag_start_screen, Vec2{_mouse_x, _mouse_y});
 			// If drag distance is small, treat it as a click
 			if (drag_distance < 5.0f) {
-				Vec2 click_world_pos = screen_to_world(_mouse_x, _mouse_y, camera, screen_width, screen_height);
+				Vec2 click_world_pos = screen_to_world(_mouse_x, _mouse_y, camera, _screen_width, _screen_height);
 				issue_move_command(registry, click_world_pos);
 				was_dragging = _is_dragging;
 				was_left_mouse_down = _left_mouse_down;

@@ -1,7 +1,7 @@
 {
     "global": {
-        "screen_width": 1280,
-        "screen_height": 720,
+        "screen_width": 1600,
+        "screen_height": 900,
         "target_selection_interval": 1.0,
         "unit_size": 1.0,
         "tile_size": 1

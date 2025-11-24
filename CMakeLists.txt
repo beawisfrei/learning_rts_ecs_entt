@@ -82,6 +82,21 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(stb)
 
+# --- Cereal ---
+# Disable tests and examples to avoid Boost dependency
+set(SKIP_PORTABILITY_TEST ON CACHE BOOL "" FORCE)
+set(SKIP_PERFORMANCE_COMPARISON ON CACHE BOOL "" FORCE)
+set(BUILD_DOC OFF CACHE BOOL "" FORCE)
+set(BUILD_SANDBOX OFF CACHE BOOL "" FORCE)
+set(WITH_WERROR OFF CACHE BOOL "" FORCE)
+
+FetchContent_Declare(
+    cereal
+    GIT_REPOSITORY https://github.com/USCiLab/cereal.git
+    GIT_TAG v1.3.2
+)
+FetchContent_MakeAvailable(cereal)
+
 # --- GoogleTest ---
 FetchContent_Declare(
     googletest

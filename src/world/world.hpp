@@ -2,6 +2,7 @@
 
 #include <entt/entt.hpp>
 #include <nlohmann/json.hpp>
+#include <string>
 #include "../components/components.hpp"
 #include "spatial_grid.hpp"
 #include "../systems/gameplay_system.hpp"
@@ -42,6 +43,10 @@ public:
 
 	// Get unit statistics
 	UnitCountData GetUnitCounts() const;
+
+	// Save/Load game state
+	bool SaveGame(const std::string& filepath);
+	bool LoadGame(const std::string& filepath);
 
 private:
 	entt::registry _registry;

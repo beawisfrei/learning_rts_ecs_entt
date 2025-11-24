@@ -19,6 +19,7 @@ target_include_directories(RTS_Example PRIVATE
     ${stb_SOURCE_DIR}
     ${imgui_SOURCE_DIR}
     ${RVO2_SOURCE_DIR}/src
+    ${cereal_SOURCE_DIR}/include
 )
 
 # Link dependencies

@@ -1,24 +1,58 @@
 #include "ui_system.hpp"
 #include "input_system.hpp"
+#include "../utils/time_controller.hpp"
 #include <backends/imgui_impl_sdl3.h>
 #include <backends/imgui_impl_opengl3.h>
+#include <cstring>
+#include <cmath>
 
-void UISystem::Render(World& world, InputSystem& inputSystem, float dt) {
+void UISystem::Render(World& world, InputSystem& inputSystem, float dt, TimeController& timeController) {
 	// UI Frame
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL3_NewFrame();
 	ImGui::NewFrame();
 
-	renderDebugWindow(world, dt);
+	renderDebugWindow(world, dt, timeController);
 	renderSelectionRect(world, inputSystem);
 
 	ImGui::Render();
 }
 
-void UISystem::renderDebugWindow(World& world, float dt) {
+void UISystem::renderDebugWindow(World& world, float dt, TimeController& timeController) {
 	ImGui::Begin("Debug");
 	ImGui::Text("Application Average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::Text("Delta Time: %.3f ms", dt * 1000.0f);
+	
+	// Time control: Play/Pause button and speed slider
+	const float speedValues[] = {1.0f/20.0f, 1.0f/10.0f, 1.0f/5.0f, 1.0f/3.0f, 1.0f/2.0f, 1.0f, 2.0f, 3.0f, 5.0f, 10.0f, 20.0f};
+	const int speedCount = 11;
+	
+	// Find current speed index
+	int currentSpeedIndex = 5; // Default to 1.0 (index 5)
+	float currentSpeed = timeController.GetSpeedCoefficient();
+	for (int i = 0; i < speedCount; ++i) {
+		if (std::abs(speedValues[i] - currentSpeed) < 0.001f) {
+			currentSpeedIndex = i;
+			break;
+		}
+	}
+	
+	// Play/Pause button
+	if (ImGui::Button(timeController.IsPaused() ? "Play" : "Pause")) {
+		timeController.SetPaused(!timeController.IsPaused());
+	}
+	
+	ImGui::SameLine();
+	
+	// Speed slider
+	int speedSliderValue = currentSpeedIndex;
+	if (ImGui::SliderInt("Speed", &speedSliderValue, 0, speedCount - 1)) {
+		timeController.SetSpeedCoefficient(speedValues[speedSliderValue]);
+	}
+	
+	// Display current speed value as text
+	ImGui::SameLine();
+	ImGui::Text("(%.2fx)", speedValues[speedSliderValue]);
 	
 	ImGui::Separator();
 	
@@ -52,6 +86,47 @@ void UISystem::renderDebugWindow(World& world, float dt) {
 	}
 	ImGui::Text("Selected: %d", counts.selectedCount);
 	ImGui::Text("Projectiles: %d", counts.projectileCount);
+	
+	ImGui::Separator();
+	ImGui::Text("Save/Load Game");
+	
+	// File path input
+	char filePathBuffer[256];
+	std::strncpy(filePathBuffer, _saveFilePath.c_str(), sizeof(filePathBuffer) - 1);
+	filePathBuffer[sizeof(filePathBuffer) - 1] = '\0';
+	
+	if (ImGui::InputText("File Path", filePathBuffer, sizeof(filePathBuffer))) {
+		_saveFilePath = std::string(filePathBuffer);
+	}
+	
+	// Save and Load buttons
+	if (ImGui::Button("Save Game")) {
+		if (world.SaveGame(_saveFilePath)) {
+			_saveLoadStatus = "Game saved successfully!";
+		} else {
+			_saveLoadStatus = "Error: Failed to save game.";
+		}
+	}
+	
+	ImGui::SameLine();
+	
+	if (ImGui::Button("Load Game")) {
+		if (world.LoadGame(_saveFilePath)) {
+			_saveLoadStatus = "Game loaded successfully!";
+		} else {
+			_saveLoadStatus = "Error: Failed to load game.";
+		}
+	}
+	
+	// Status message
+	if (!_saveLoadStatus.empty()) {
+		ImVec4 color = (_saveLoadStatus.find("Error") != std::string::npos) 
+			? ImVec4(1.0f, 0.0f, 0.0f, 1.0f)  // Red for errors
+			: ImVec4(0.0f, 1.0f, 0.0f, 1.0f); // Green for success
+		ImGui::PushStyleColor(ImGuiCol_Text, color);
+		ImGui::Text("%s", _saveLoadStatus.c_str());
+		ImGui::PopStyleColor();
+	}
 	
 	ImGui::End();
 }
