@@ -3,12 +3,11 @@
 #include <entt/entt.hpp>
 #include "../components/components.hpp"
 
-class SpatialGrid;
-class UnitFactory;
+class World;
 
 class InputSystem {
 public:
-    void update(entt::registry& registry, SpatialGrid& spatial_grid, UnitFactory& unit_factory, float dt);
+    void update(World& world, float dt);
     void process_event(const SDL_Event& event);
 	
 	// Get selection rect for rendering

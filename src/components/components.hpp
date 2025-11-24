@@ -4,6 +4,7 @@
 // Following the SDD and plan
 
 #include "../utils/vec2.hpp"
+#include <entt/entt.hpp>
 
 struct Position {
 	Vec2 value;

@@ -1,0 +1,50 @@
+---
+alwaysApply: true
+---
+
+# Coding Standard for ECS RTS Project
+
+## File Naming
+- All files should be named using **snake_case**
+  - Example: `gameplay_system.cpp`, `unit_factory.hpp`
+
+## Indentation
+- Use **tabs** for indentation (not spaces)
+
+## Naming Conventions
+
+### Fields/Member Variables
+- **Private and protected fields**: Use underscore prefix with camelCase
+  - Format: `_privateField`
+  - Example: `_playerCount`, `_maxHealth`
+  
+- **Public fields**: Use camelCase without prefix
+  - Format: `publicField`
+  - Example: `position`, `velocity`
+
+### Classes and Structures
+- Use **PascalCase** (UpperCamelCase)
+  - Format: `ClassName`
+  - Example: `GameplaySystem`, `RenderSystem`, `UnitFactory`
+
+### Functions/Methods
+- **Public functions**: Use PascalCase
+  - Format: `FunctionName`
+  - Example: `Update()`, `Initialize()`, `GetPosition()`
+
+- **Private functions**: Use camelCase
+  - Format: `functionName`
+  - Example: `updateInternal()`, `calculateDistance()`, `loadResources()`
+
+## Summary Table
+
+| Element | Convention | Example |
+|---------|-----------|---------|
+| Files | snake_case | `render_system.cpp` |
+| Classes/Structs | PascalCase | `GameplaySystem` |
+| Public Functions | PascalCase | `Initialize()` |
+| Private Functions | camelCase | `updateInternal()` |
+| Public Fields | camelCase | `position` |
+| Private/Protected Fields | _camelCase | `_velocity` |
+| Indentation | Tabs | `\t` |
+

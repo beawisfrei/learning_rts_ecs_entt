@@ -1,5 +1,5 @@
 #include "gameplay_system.hpp"
-#include "../utils/spatial_grid.hpp"
+#include "../world/spatial_grid.hpp"
 #include "../utils/math_utils.hpp"
 #include <iostream>
 

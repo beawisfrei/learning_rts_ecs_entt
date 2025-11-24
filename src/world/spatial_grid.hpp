@@ -2,7 +2,7 @@
 
 #include <entt/entt.hpp>
 #include "../components/components.hpp"
-#include "math_utils.hpp"
+#include "../utils/math_utils.hpp"
 #include <vector>
 
 class SpatialGrid {

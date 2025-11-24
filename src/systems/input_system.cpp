@@ -1,7 +1,6 @@
 #include "input_system.hpp"
 #include "../components/components.hpp"
-#include "../utils/spatial_grid.hpp"
-#include "../utils/unit_factory.hpp"
+#include "../world/world.hpp"
 #include "../utils/math_utils.hpp"
 #include <iostream>
 #include <cmath>
@@ -106,7 +105,10 @@ void InputSystem::issue_move_command(entt::registry& registry, const Vec2& click
 	}
 }
 
-void InputSystem::update(entt::registry& registry, SpatialGrid& spatial_grid, UnitFactory& unit_factory, float dt) {
+void InputSystem::update(World& world, float dt) {
+	entt::registry& registry = world.GetRegistry();
+	SpatialGrid& spatial_grid = world.GetSpatialGrid();
+	
     // Get Camera
     auto cam_view = registry.view<Camera, MainCamera>();
 	Camera camera = {Vec2{0.0f, 0.0f}, 1.0f};
@@ -182,7 +184,7 @@ void InputSystem::update(entt::registry& registry, SpatialGrid& spatial_grid, Un
 							rect_min.x + x * spacing_x,
 							rect_min.y + y * spacing_y
 						};
-						unit_factory.spawn_unit(registry, _spawn_type, _spawn_faction, spawn_pos);
+						world.SpawnUnit(_spawn_type, _spawn_faction, spawn_pos);
 						spawned++;
 					}
 				}
