@@ -1,8 +1,8 @@
-* Integrations tests
--- Test infrastructure is ready but test are not
--- Data being copied I want to use oroginal; data 
 * Использовать Tag Exclude Approach для движения
-* Нормально реализовать Spatial Grid
+* Доделать реализацию SpatialGrid
+  - Оптимизация Move
+  - Faction Wise Grid
+  - Faction enum
 * Нормально реализовать отрисовку
 * Сделатать так, чтобы Unit_factory не читала json каждый раз
 * Add Tracy support to see the perfromance

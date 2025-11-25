@@ -12,6 +12,9 @@ public:
     // Find project root directory containing data folder and set as working directory
     static bool SetDataDirectory();
     
+    // Get image dimensions without loading the full texture
+    static bool GetImageDimensions(const std::string& path, int& width, int& height);
+    
     // Helper to apply config to registry/game state?
     // For now, just specific loaders
 };

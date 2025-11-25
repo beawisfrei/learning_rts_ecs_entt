@@ -1,7 +1,6 @@
 #include "input_system.hpp"
 #include "../components/components.hpp"
 #include "../world/world.hpp"
-#include "../utils/math_utils.hpp"
 #include <iostream>
 #include <cmath>
 #include <limits>
@@ -141,7 +140,7 @@ void InputSystem::update(World& world, float dt) {
 		
 		// Check for M + Click (move command) - only if it was a click, not a drag
 		if (_m_down) {
-			float drag_distance = MathUtils::distance(_drag_start_screen, Vec2{_mouse_x, _mouse_y});
+			float drag_distance = Vec2::distance(_drag_start_screen, Vec2{_mouse_x, _mouse_y});
 			// If drag distance is small, treat it as a click
 			if (drag_distance < 5.0f) {
 				Vec2 click_world_pos = screen_to_world(_mouse_x, _mouse_y, camera, _screen_width, _screen_height);
@@ -189,12 +188,15 @@ void InputSystem::update(World& world, float dt) {
 			}
 		} else if (_d_down) {
 			// Delete units in rect
-			auto entities = spatial_grid.query_rect(rect_min, rect_max);
-			for (auto entity : entities) {
+			spatial_grid.QueryRect(rect_min, rect_max, [&](entt::entity entity) {
 				if (registry.valid(entity)) {
+					// Remove from spatial grid before destroying
+					if (registry.all_of<SpatialNode>(entity)) {
+						spatial_grid.Remove(entity);
+					}
 					registry.destroy(entity);
 				}
-			}
+			});
 		} else {
 			// Normal selection
 			// First, clear existing selections
@@ -204,12 +206,11 @@ void InputSystem::update(World& world, float dt) {
 			}
 			
 			// Add selection to entities in rect
-			auto entities = spatial_grid.query_rect(rect_min, rect_max);
-			for (auto entity : entities) {
+			spatial_grid.QueryRect(rect_min, rect_max, [&](entt::entity entity) {
 				if (registry.valid(entity) && registry.all_of<Unit>(entity)) {
 					registry.emplace_or_replace<Selected>(entity);
 				}
-			}
+			});
 		}
 	}
 	was_dragging = _is_dragging;

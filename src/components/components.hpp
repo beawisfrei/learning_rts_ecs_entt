@@ -205,3 +205,15 @@ struct Sprite {
 		archive(CEREAL_NVP(texture_id), CEREAL_NVP(uv), CEREAL_NVP(color));
 	}
 };
+
+// SpatialNode component - for intrusive doubly-linked list in spatial grid
+struct SpatialNode {
+	entt::entity next = entt::null;
+	entt::entity prev = entt::null;
+	int cell_index = -1;
+
+	template<class Archive>
+	void serialize(Archive &archive) {
+		archive(CEREAL_NVP(next), CEREAL_NVP(prev), CEREAL_NVP(cell_index));
+	}
+};

@@ -4,7 +4,8 @@
         "screen_height": 900,
         "target_selection_interval": 1.0,
         "unit_size": 1.0,
-        "tile_size": 1
+        "tile_size": 1,
+        "cell_size": 5
     },
     "factions": [
         { "id": 0, "color": [255, 0, 0, 255] },

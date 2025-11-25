@@ -1,81 +1,47 @@
 #pragma once
 
 #include <entt/entt.hpp>
-#include "../components/components.hpp"
-#include "../utils/math_utils.hpp"
+#include "../utils/vec2.hpp"
 #include <vector>
+#include <functional>
+
+// Function types for callbacks
+using EntityCallback = std::function<void(entt::entity)>;
+using EntityFilter = std::function<bool(entt::entity)>;
 
 class SpatialGrid {
 public:
-	SpatialGrid(entt::registry& registry) : _registry(registry) {}
+	SpatialGrid(entt::registry& registry, int width, int height, int cell_size);
 
-	// Query all entities with Position component within the given rectangle
-	std::vector<entt::entity> query_rect(const Vec2& min, const Vec2& max) {
-		std::vector<entt::entity> result;
-		
-		// Brute-force implementation for now
-		auto view = _registry.view<Position>();
-		for (auto entity : view) {
-			const auto& pos = view.get<Position>(entity);
-			if (MathUtils::point_in_rect(pos.value, min, max)) {
-				result.push_back(entity);
-			}
-		}
-		
-		return result;
-	}
+	// O(1) - No Allocations
+	void Insert(entt::entity entity, const Vec2& pos);
+
+	// O(1) - No Allocations
+	void Remove(entt::entity entity);
+
+	// O(1) - The "Movement System" calls this
+	void Update(entt::entity entity, const Vec2& old_pos, const Vec2& new_pos);
+
+	// Query all entities within a rectangle
+	void QueryRect(const Vec2& min, const Vec2& max, EntityCallback callback);
 
 	// Find nearest entity to a given position within a radius (with optional faction filter)
-	entt::entity find_nearest(const Vec2& pos, float radius, int faction = -1, bool same_faction = false) {
-		entt::entity nearest = entt::null;
-		float min_dist = radius;
-
-		auto view = _registry.view<Position, Faction>();
-		for (auto entity : view) {
-			const auto& entity_pos = view.get<Position>(entity);
-			const auto& entity_faction = view.get<Faction>(entity);
-
-			// Faction filtering
-			if (faction >= 0) {
-				if (same_faction && entity_faction.id != faction) continue;
-				if (!same_faction && entity_faction.id == faction) continue;
-			}
-
-			float dist = MathUtils::distance(pos, entity_pos.value);
-			if (dist < min_dist) {
-				min_dist = dist;
-				nearest = entity;
-			}
-		}
-
-		return nearest;
-	}
+	entt::entity FindNearest(const Vec2& pos, float radius, int faction = -1, bool same_faction = false);
 
 	// Find all entities within a radius (with optional faction filter)
-	std::vector<entt::entity> query_radius(const Vec2& pos, float radius, int faction = -1, bool same_faction = false) {
-		std::vector<entt::entity> result;
-
-		auto view = _registry.view<Position, Faction>();
-		for (auto entity : view) {
-			const auto& entity_pos = view.get<Position>(entity);
-			const auto& entity_faction = view.get<Faction>(entity);
-
-			// Faction filtering
-			if (faction >= 0) {
-				if (same_faction && entity_faction.id != faction) continue;
-				if (!same_faction && entity_faction.id == faction) continue;
-			}
-
-			float dist = MathUtils::distance(pos, entity_pos.value);
-			if (dist <= radius) {
-				result.push_back(entity);
-			}
-		}
-
-		return result;
-	}
+	void QueryRadius(const Vec2& pos, float radius, EntityCallback callback, int faction = -1, bool same_faction = false);
 
 private:
-	entt::registry& _registry;
-};
+	// Internal function that queries cells and applies a filter function
+	void queryCells(const Vec2& min, const Vec2& max, EntityFilter filter, EntityCallback callback);
 
+	int getCellIndex(const Vec2& pos) const;
+
+	entt::registry& _registry;
+	int _width, _height;
+	int _cell_size;
+	int _cols, _rows;
+
+	// The grid only stores the "Head" of the list for that cell
+	std::vector<entt::entity> _cells;
+};

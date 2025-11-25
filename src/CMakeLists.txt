@@ -3,6 +3,7 @@ file(GLOB_RECURSE ALL_SOURCES
     "*.cpp"
     "systems/*.cpp"
     "utils/*.cpp"
+    "world/*.cpp"
 )
 
 file(GLOB_RECURSE HEADERS

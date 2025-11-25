@@ -119,3 +119,15 @@ unsigned int ResourceLoader::load_texture(const std::string& path) {
 
     return textureID;
 }
+
+bool ResourceLoader::GetImageDimensions(const std::string& path, int& width, int& height) {
+	int nrChannels;
+	unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+	if (data) {
+		stbi_image_free(data);
+		return true;
+	} else {
+		std::cerr << "Failed to load image dimensions: " << path << std::endl;
+		return false;
+	}
+}

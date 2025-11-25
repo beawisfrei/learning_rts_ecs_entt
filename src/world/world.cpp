@@ -1,4 +1,5 @@
 #include "world.hpp"
+#include "../utils/resource_loader.hpp"
 #include <cereal/archives/json.hpp>
 #include <cereal/types/map.hpp>
 #include <fstream>
@@ -16,8 +17,24 @@ World::World()
 }
 
 bool World::Initialize(const nlohmann::json& config, bool enableRender) {
+	// Get terrain texture dimensions to calculate world bounds
+	int terrain_width = 0, terrain_height = 0;
+	if (!ResourceLoader::GetImageDimensions("data/terrain.png", terrain_width, terrain_height)) {
+		std::cerr << "Failed to get terrain dimensions, using defaults" << std::endl;
+		terrain_width = 1000;
+		terrain_height = 1000;
+	}
+
+	// Calculate world bounds: terrain_size * tile_size
+	int tile_size = config["global"].value("tile_size", 1);
+	int world_width = terrain_width * tile_size;
+	int world_height = terrain_height * tile_size;
+
+	// Get cell_size from config
+	int cell_size = config["global"].value("cell_size", 50);
+
 	// Create systems
-	_spatialGrid = new SpatialGrid(_registry);
+	_spatialGrid = new SpatialGrid(_registry, world_width, world_height, cell_size);
 	_gameplaySystem = new GameplaySystem(*_spatialGrid);
 	_unitFactory = new UnitFactory(config);
 
@@ -46,7 +63,15 @@ void World::Render() {
 }
 
 entt::entity World::SpawnUnit(UnitType type, int faction, const Vec2& position) {
-	return _unitFactory->spawn_unit(_registry, type, faction, position);
+	auto entity = _unitFactory->spawn_unit(_registry, type, faction, position);
+	
+	// Insert entity into spatial grid
+	if (_spatialGrid && _registry.all_of<Position>(entity)) {
+		const auto& pos = _registry.get<Position>(entity);
+		_spatialGrid->Insert(entity, pos.value);
+	}
+	
+	return entity;
 }
 
 Camera* World::GetCamera() {
@@ -200,6 +225,15 @@ bool World::LoadGame(const std::string& filepath) {
 		auto cameraView = _registry.view<MainCamera>();
 		if (!cameraView.empty()) {
 			_cameraEntity = *cameraView.begin();
+		}
+
+		// Insert all loaded entities with Position into spatial grid
+		if (_spatialGrid) {
+			auto positionView = _registry.view<Position>();
+			for (auto entity : positionView) {
+				const auto& pos = positionView.get<Position>(entity);
+				_spatialGrid->Insert(entity, pos.value);
+			}
 		}
 
 		// Clean up orphaned entities
