@@ -1,0 +1,7 @@
+{
+	"input_file": "input.json",
+	"expected_file": "expected.json",
+	"iterations": 500,
+	"delta_time": 0.01
+}
+

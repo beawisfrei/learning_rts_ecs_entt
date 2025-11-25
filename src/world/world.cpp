@@ -15,15 +15,17 @@ World::World()
 {
 }
 
-bool World::Initialize(const nlohmann::json& config) {
+bool World::Initialize(const nlohmann::json& config, bool enableRender) {
 	// Create systems
 	_spatialGrid = new SpatialGrid(_registry);
 	_gameplaySystem = new GameplaySystem(*_spatialGrid);
-	_renderSystem = new RenderSystem();
 	_unitFactory = new UnitFactory(config);
 
 	// Initialize render system
-	_renderSystem->init(config);
+	if (enableRender) {
+		_renderSystem = new RenderSystem();
+		_renderSystem->init(config);
+	}
 
 	// Create camera entity
 	_cameraEntity = _registry.create();
@@ -38,7 +40,9 @@ void World::Update(float dt) {
 }
 
 void World::Render() {
-	_renderSystem->update(_registry);
+	if (_renderSystem) {
+		_renderSystem->update(_registry);
+	}
 }
 
 entt::entity World::SpawnUnit(UnitType type, int faction, const Vec2& position) {

@@ -12,6 +12,11 @@
 #include "utils/time_controller.hpp"
 
 int main(int argc, char* argv[]) {
+	// Set working directory to project root (where data folder is located)
+	if (!ResourceLoader::SetDataDirectory()) {
+		std::cerr << "Warning: Could not find data directory. Trying current directory..." << std::endl;
+	}
+	
 	// Load Config first (needed for window dimensions)
 	nlohmann::json config;
 	if (!ResourceLoader::load_config("data/config.json", config)) {

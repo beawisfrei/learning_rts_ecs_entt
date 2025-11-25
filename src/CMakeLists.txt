@@ -1,5 +1,5 @@
 
-file(GLOB_RECURSE SOURCES
+file(GLOB_RECURSE ALL_SOURCES
     "*.cpp"
     "systems/*.cpp"
     "utils/*.cpp"
@@ -12,9 +12,14 @@ file(GLOB_RECURSE HEADERS
     "components/*.hpp"
 )
 
-add_executable(RTS_Example ${SOURCES} ${HEADERS})
+# Separate main.cpp from library sources
+file(GLOB MAIN_SOURCE "main.cpp")
+list(REMOVE_ITEM ALL_SOURCES ${MAIN_SOURCE})
 
-target_include_directories(RTS_Example PRIVATE 
+# Create static library with all sources except main.cpp
+add_library(RTS_Core STATIC ${ALL_SOURCES} ${HEADERS})
+
+target_include_directories(RTS_Core PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${stb_SOURCE_DIR}
     ${imgui_SOURCE_DIR}
@@ -22,8 +27,8 @@ target_include_directories(RTS_Example PRIVATE
     ${cereal_SOURCE_DIR}/include
 )
 
-# Link dependencies
-target_link_libraries(RTS_Example PRIVATE
+# Link dependencies for library
+target_link_libraries(RTS_Core PUBLIC
     EnTT::EnTT
     SDL3::SDL3
     nlohmann_json::nlohmann_json
@@ -32,10 +37,14 @@ target_link_libraries(RTS_Example PRIVATE
     opengl32 # Standard Windows OpenGL library
 )
 
-# Copy assets to build directory
-add_custom_command(TARGET RTS_Example POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/data $<TARGET_FILE_DIR:RTS_Example>/data
+# Create executable that links to library
+add_executable(RTS_Example ${MAIN_SOURCE})
+
+target_link_libraries(RTS_Example PRIVATE RTS_Core)
+
+# Set working directory to source directory so executables can access original data folder
+set_target_properties(RTS_Example PROPERTIES
+    VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
 )
 
 # Copy SDL3.dll to the output directory

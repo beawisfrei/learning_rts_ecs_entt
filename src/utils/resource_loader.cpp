@@ -1,9 +1,63 @@
 #include "resource_loader.hpp"
 #include <fstream>
 #include <iostream>
+#include <filesystem>
 #define STB_IMAGE_IMPLEMENTATION // Define this only in one .cpp file to implement the library
 #include <stb_image.h>
 #include "gl_loader.hpp"
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#include <limits.h>
+#endif
+
+bool ResourceLoader::SetDataDirectory() {
+	try {
+		std::filesystem::path exePath;
+		
+#ifdef _WIN32
+		char exePathBuf[MAX_PATH];
+		GetModuleFileNameA(nullptr, exePathBuf, MAX_PATH);
+		exePath = std::filesystem::path(exePathBuf);
+#else
+		char exePathBuf[PATH_MAX];
+		ssize_t count = readlink("/proc/self/exe", exePathBuf, PATH_MAX);
+		if (count != -1) {
+			exePathBuf[count] = '\0';
+			exePath = std::filesystem::path(exePathBuf);
+		} else {
+			return false;
+		}
+#endif
+		
+		// Start from executable directory and walk up looking for data folder
+		std::filesystem::path currentDir = exePath.parent_path();
+		
+		// Walk up directory tree (max 10 levels to avoid infinite loops)
+		for (int i = 0; i < 10; ++i) {
+			std::filesystem::path dataPath = currentDir / "data";
+			if (std::filesystem::exists(dataPath) && std::filesystem::is_directory(dataPath)) {
+				// Found data folder, change working directory to this location
+				std::filesystem::current_path(currentDir);
+				return true;
+			}
+			
+			// Move up one directory
+			if (currentDir.has_parent_path() && currentDir != currentDir.parent_path()) {
+				currentDir = currentDir.parent_path();
+			} else {
+				break;
+			}
+		}
+		
+		return false;
+	} catch (const std::exception& e) {
+		std::cerr << "Error setting data directory: " << e.what() << std::endl;
+		return false;
+	}
+}
 
 bool ResourceLoader::load_config(const std::string& path, nlohmann::json& out_json) {
     std::ifstream file(path);

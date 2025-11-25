@@ -1,0 +1,309 @@
+{
+    "value0": 9,
+    "value1": 7,
+    "value2": 0,
+    "value3": 1048577,
+    "value4": 1048578,
+    "value5": 1048582,
+    "value6": 1048580,
+    "value7": 1048581,
+    "value8": 3145736,
+    "value9": 2097155,
+    "value10": 2097159,
+    "value11": 6,
+    "value12": 1048577,
+    "value13": {
+        "value": {
+            "x": -12.958677291870118,
+            "y": 4.297521114349365
+        }
+    },
+    "value14": 1048578,
+    "value15": {
+        "value": {
+            "x": -15.272726058959961,
+            "y": 3.8347110748291017
+        }
+    },
+    "value16": 1048582,
+    "value17": {
+        "value": {
+            "x": -9.538461685180664,
+            "y": 3.692307472229004
+        }
+    },
+    "value18": 1048580,
+    "value19": {
+        "value": {
+            "x": -17.190082550048829,
+            "y": 4.429751873016357
+        }
+    },
+    "value20": 1048581,
+    "value21": {
+        "value": {
+            "x": -11.076923370361329,
+            "y": 3.7802188396453859
+        }
+    },
+    "value22": 3145736,
+    "value23": {
+        "value": {
+            "x": -8.571427345275879,
+            "y": 3.032966375350952
+        }
+    },
+    "value24": 6,
+    "value25": 1048577,
+    "value26": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value27": 1048578,
+    "value28": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 12.0,
+        "stateInt": 0
+    },
+    "value29": 1048582,
+    "value30": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 12.0,
+        "stateInt": 0
+    },
+    "value31": 1048580,
+    "value32": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value33": 1048581,
+    "value34": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value35": 3145736,
+    "value36": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value37": 0,
+    "value38": 6,
+    "value39": 1048577,
+    "value40": {
+        "typeInt": 0,
+        "faction": 0
+    },
+    "value41": 1048578,
+    "value42": {
+        "typeInt": 1,
+        "faction": 0
+    },
+    "value43": 1048582,
+    "value44": {
+        "typeInt": 1,
+        "faction": 1
+    },
+    "value45": 1048580,
+    "value46": {
+        "typeInt": 3,
+        "faction": 0
+    },
+    "value47": 1048581,
+    "value48": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value49": 3145736,
+    "value50": {
+        "typeInt": 3,
+        "faction": 1
+    },
+    "value51": 1,
+    "value52": 0,
+    "value53": {
+        "offset": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "zoom": 18.200000762939454
+    },
+    "value54": 1,
+    "value55": 0,
+    "value56": 6,
+    "value57": 1048577,
+    "value58": {
+        "id": 0
+    },
+    "value59": 1048578,
+    "value60": {
+        "id": 0
+    },
+    "value61": 1048582,
+    "value62": {
+        "id": 1
+    },
+    "value63": 1048580,
+    "value64": {
+        "id": 0
+    },
+    "value65": 1048581,
+    "value66": {
+        "id": 1
+    },
+    "value67": 3145736,
+    "value68": {
+        "id": 1
+    },
+    "value69": 6,
+    "value70": 1048577,
+    "value71": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value72": 1048578,
+    "value73": {
+        "current": 60.0,
+        "max": 60.0,
+        "shield": 2.0
+    },
+    "value74": 1048582,
+    "value75": {
+        "current": 60.0,
+        "max": 60.0,
+        "shield": 2.0
+    },
+    "value76": 1048580,
+    "value77": {
+        "current": 50.0,
+        "max": 50.0,
+        "shield": 0.0
+    },
+    "value78": 1048581,
+    "value79": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value80": 3145736,
+    "value81": {
+        "current": 50.0,
+        "max": 50.0,
+        "shield": 0.0
+    },
+    "value82": 2,
+    "value83": 1048577,
+    "value84": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value85": 1048581,
+    "value86": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value87": 2,
+    "value88": 1048578,
+    "value89": {
+        "damage": 8.0,
+        "range": 20.0,
+        "cooldown": 2.0,
+        "timer": 0.0,
+        "projectile_speed": 25.0,
+        "projectile_type": 0,
+        "aoe_radius": 0.0
+    },
+    "value90": 1048582,
+    "value91": {
+        "damage": 8.0,
+        "range": 20.0,
+        "cooldown": 2.0,
+        "timer": 0.0,
+        "projectile_speed": 25.0,
+        "projectile_type": 0,
+        "aoe_radius": 0.0
+    },
+    "value92": 2,
+    "value93": 1048580,
+    "value94": {
+        "heal_amount": 10.0,
+        "range": 5.0,
+        "cooldown": 2.0,
+        "timer": 0.0
+    },
+    "value95": 3145736,
+    "value96": {
+        "heal_amount": 10.0,
+        "range": 5.0,
+        "cooldown": 2.0,
+        "timer": 0.0
+    },
+    "value97": 4,
+    "value98": 1048577,
+    "value99": {
+        "target": 4294967295
+    },
+    "value100": 1048578,
+    "value101": {
+        "target": 4294967295
+    },
+    "value102": 1048582,
+    "value103": {
+        "target": 4294967295
+    },
+    "value104": 1048581,
+    "value105": {
+        "target": 4294967295
+    },
+    "value106": 0
+}

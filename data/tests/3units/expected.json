@@ -1,0 +1,309 @@
+{
+    "value0": 9,
+    "value1": 7,
+    "value2": 1048576,
+    "value3": 1,
+    "value4": 2,
+    "value5": 3,
+    "value6": 4,
+    "value7": 5,
+    "value8": 6,
+    "value9": 2097159,
+    "value10": 2097160,
+    "value11": 6,
+    "value12": 1,
+    "value13": {
+        "value": {
+            "x": -12.958677291870118,
+            "y": 4.297521114349365
+        }
+    },
+    "value14": 2,
+    "value15": {
+        "value": {
+            "x": -15.272726058959961,
+            "y": 3.8347110748291017
+        }
+    },
+    "value16": 3,
+    "value17": {
+        "value": {
+            "x": -9.538461685180664,
+            "y": 3.692307472229004
+        }
+    },
+    "value18": 4,
+    "value19": {
+        "value": {
+            "x": -17.190082550048829,
+            "y": 4.429751873016357
+        }
+    },
+    "value20": 5,
+    "value21": {
+        "value": {
+            "x": -11.076923370361329,
+            "y": 3.7802188396453859
+        }
+    },
+    "value22": 6,
+    "value23": {
+        "value": {
+            "x": -8.571427345275879,
+            "y": 3.032966375350952
+        }
+    },
+    "value24": 6,
+    "value25": 1,
+    "value26": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value27": 2,
+    "value28": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 12.0,
+        "stateInt": 0
+    },
+    "value29": 3,
+    "value30": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 12.0,
+        "stateInt": 0
+    },
+    "value31": 4,
+    "value32": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value33": 5,
+    "value34": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value35": 6,
+    "value36": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value37": 0,
+    "value38": 6,
+    "value39": 1,
+    "value40": {
+        "typeInt": 0,
+        "faction": 0
+    },
+    "value41": 2,
+    "value42": {
+        "typeInt": 1,
+        "faction": 0
+    },
+    "value43": 3,
+    "value44": {
+        "typeInt": 1,
+        "faction": 1
+    },
+    "value45": 4,
+    "value46": {
+        "typeInt": 3,
+        "faction": 0
+    },
+    "value47": 5,
+    "value48": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value49": 6,
+    "value50": {
+        "typeInt": 3,
+        "faction": 1
+    },
+    "value51": 1,
+    "value52": 1048576,
+    "value53": {
+        "offset": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "zoom": 18.200000762939454
+    },
+    "value54": 1,
+    "value55": 1048576,
+    "value56": 6,
+    "value57": 1,
+    "value58": {
+        "id": 0
+    },
+    "value59": 2,
+    "value60": {
+        "id": 0
+    },
+    "value61": 3,
+    "value62": {
+        "id": 1
+    },
+    "value63": 4,
+    "value64": {
+        "id": 0
+    },
+    "value65": 5,
+    "value66": {
+        "id": 1
+    },
+    "value67": 6,
+    "value68": {
+        "id": 1
+    },
+    "value69": 6,
+    "value70": 1,
+    "value71": {
+        "current": 89.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value72": 2,
+    "value73": {
+        "current": 60.0,
+        "max": 60.0,
+        "shield": 2.0
+    },
+    "value74": 3,
+    "value75": {
+        "current": 60.0,
+        "max": 60.0,
+        "shield": 2.0
+    },
+    "value76": 4,
+    "value77": {
+        "current": 50.0,
+        "max": 50.0,
+        "shield": 0.0
+    },
+    "value78": 5,
+    "value79": {
+        "current": 89.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value80": 6,
+    "value81": {
+        "current": 50.0,
+        "max": 50.0,
+        "shield": 0.0
+    },
+    "value82": 2,
+    "value83": 1,
+    "value84": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.9599993824958801
+    },
+    "value85": 5,
+    "value86": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.9599993824958801
+    },
+    "value87": 2,
+    "value88": 2,
+    "value89": {
+        "damage": 8.0,
+        "range": 20.0,
+        "cooldown": 2.0,
+        "timer": 0.9799993634223938,
+        "projectile_speed": 25.0,
+        "projectile_type": 0,
+        "aoe_radius": 0.0
+    },
+    "value90": 3,
+    "value91": {
+        "damage": 8.0,
+        "range": 20.0,
+        "cooldown": 2.0,
+        "timer": 0.9799993634223938,
+        "projectile_speed": 25.0,
+        "projectile_type": 0,
+        "aoe_radius": 0.0
+    },
+    "value92": 2,
+    "value93": 4,
+    "value94": {
+        "heal_amount": 10.0,
+        "range": 5.0,
+        "cooldown": 2.0,
+        "timer": 0.9799993634223938
+    },
+    "value95": 6,
+    "value96": {
+        "heal_amount": 10.0,
+        "range": 5.0,
+        "cooldown": 2.0,
+        "timer": 0.9799993634223938
+    },
+    "value97": 4,
+    "value98": 1,
+    "value99": {
+        "target": 5
+    },
+    "value100": 2,
+    "value101": {
+        "target": 5
+    },
+    "value102": 3,
+    "value103": {
+        "target": 1
+    },
+    "value104": 5,
+    "value105": {
+        "target": 1
+    },
+    "value106": 0
+}

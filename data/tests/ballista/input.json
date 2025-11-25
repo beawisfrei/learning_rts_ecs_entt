@@ -1,0 +1,1017 @@
+{
+    "value0": 22,
+    "value1": 22,
+    "value2": 0,
+    "value3": 3145729,
+    "value4": 2097154,
+    "value5": 2097158,
+    "value6": 2097156,
+    "value7": 2097157,
+    "value8": 4194312,
+    "value9": 2097155,
+    "value10": 2097159,
+    "value11": 9,
+    "value12": 10,
+    "value13": 11,
+    "value14": 12,
+    "value15": 13,
+    "value16": 14,
+    "value17": 15,
+    "value18": 16,
+    "value19": 17,
+    "value20": 18,
+    "value21": 19,
+    "value22": 20,
+    "value23": 21,
+    "value24": 21,
+    "value25": 3145729,
+    "value26": {
+        "value": {
+            "x": -6.72527551651001,
+            "y": -0.9670335650444031
+        }
+    },
+    "value27": 2097154,
+    "value28": {
+        "value": {
+            "x": -5.872528076171875,
+            "y": -0.9670335650444031
+        }
+    },
+    "value29": 2097158,
+    "value30": {
+        "value": {
+            "x": -5.019780158996582,
+            "y": -0.9670335650444031
+        }
+    },
+    "value31": 2097156,
+    "value32": {
+        "value": {
+            "x": -4.167032718658447,
+            "y": -0.9670335650444031
+        }
+    },
+    "value33": 2097157,
+    "value34": {
+        "value": {
+            "x": -3.3142852783203127,
+            "y": -0.9670335650444031
+        }
+    },
+    "value35": 4194312,
+    "value36": {
+        "value": {
+            "x": -2.4615378379821779,
+            "y": -0.9670335650444031
+        }
+    },
+    "value37": 2097155,
+    "value38": {
+        "value": {
+            "x": -6.72527551651001,
+            "y": 0.10549384355545044
+        }
+    },
+    "value39": 2097159,
+    "value40": {
+        "value": {
+            "x": -5.872528076171875,
+            "y": 0.10549384355545044
+        }
+    },
+    "value41": 9,
+    "value42": {
+        "value": {
+            "x": -5.019780158996582,
+            "y": 0.10549384355545044
+        }
+    },
+    "value43": 10,
+    "value44": {
+        "value": {
+            "x": -4.167032718658447,
+            "y": 0.10549384355545044
+        }
+    },
+    "value45": 11,
+    "value46": {
+        "value": {
+            "x": -3.3142852783203127,
+            "y": 0.10549384355545044
+        }
+    },
+    "value47": 12,
+    "value48": {
+        "value": {
+            "x": -2.4615378379821779,
+            "y": 0.10549384355545044
+        }
+    },
+    "value49": 13,
+    "value50": {
+        "value": {
+            "x": -6.72527551651001,
+            "y": 1.1780211925506592
+        }
+    },
+    "value51": 14,
+    "value52": {
+        "value": {
+            "x": -5.872528076171875,
+            "y": 1.1780211925506592
+        }
+    },
+    "value53": 15,
+    "value54": {
+        "value": {
+            "x": -5.019780158996582,
+            "y": 1.1780211925506592
+        }
+    },
+    "value55": 16,
+    "value56": {
+        "value": {
+            "x": -4.167032718658447,
+            "y": 1.1780211925506592
+        }
+    },
+    "value57": 17,
+    "value58": {
+        "value": {
+            "x": -3.3142852783203127,
+            "y": 1.1780211925506592
+        }
+    },
+    "value59": 18,
+    "value60": {
+        "value": {
+            "x": -2.4615378379821779,
+            "y": 1.1780211925506592
+        }
+    },
+    "value61": 19,
+    "value62": {
+        "value": {
+            "x": -6.72527551651001,
+            "y": 2.2505486011505129
+        }
+    },
+    "value63": 20,
+    "value64": {
+        "value": {
+            "x": -5.872528076171875,
+            "y": 2.2505486011505129
+        }
+    },
+    "value65": 21,
+    "value66": {
+        "value": {
+            "x": -14.945054054260254,
+            "y": 0.08791160583496094
+        }
+    },
+    "value67": 21,
+    "value68": 3145729,
+    "value69": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value70": 2097154,
+    "value71": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value72": 2097158,
+    "value73": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value74": 2097156,
+    "value75": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value76": 2097157,
+    "value77": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value78": 4194312,
+    "value79": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value80": 2097155,
+    "value81": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value82": 2097159,
+    "value83": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value84": 9,
+    "value85": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value86": 10,
+    "value87": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value88": 11,
+    "value89": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value90": 12,
+    "value91": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value92": 13,
+    "value93": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value94": 14,
+    "value95": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value96": 15,
+    "value97": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value98": 16,
+    "value99": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value100": 17,
+    "value101": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value102": 18,
+    "value103": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value104": 19,
+    "value105": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value106": 20,
+    "value107": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 10.0,
+        "stateInt": 0
+    },
+    "value108": 21,
+    "value109": {
+        "velocity": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "target": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "speed": 5.0,
+        "stateInt": 0
+    },
+    "value110": 0,
+    "value111": 21,
+    "value112": 3145729,
+    "value113": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value114": 2097154,
+    "value115": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value116": 2097158,
+    "value117": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value118": 2097156,
+    "value119": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value120": 2097157,
+    "value121": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value122": 4194312,
+    "value123": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value124": 2097155,
+    "value125": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value126": 2097159,
+    "value127": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value128": 9,
+    "value129": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value130": 10,
+    "value131": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value132": 11,
+    "value133": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value134": 12,
+    "value135": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value136": 13,
+    "value137": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value138": 14,
+    "value139": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value140": 15,
+    "value141": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value142": 16,
+    "value143": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value144": 17,
+    "value145": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value146": 18,
+    "value147": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value148": 19,
+    "value149": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value150": 20,
+    "value151": {
+        "typeInt": 0,
+        "faction": 1
+    },
+    "value152": 21,
+    "value153": {
+        "typeInt": 2,
+        "faction": 0
+    },
+    "value154": 1,
+    "value155": 0,
+    "value156": {
+        "offset": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "zoom": 18.200000762939454
+    },
+    "value157": 1,
+    "value158": 0,
+    "value159": 21,
+    "value160": 3145729,
+    "value161": {
+        "id": 1
+    },
+    "value162": 2097154,
+    "value163": {
+        "id": 1
+    },
+    "value164": 2097158,
+    "value165": {
+        "id": 1
+    },
+    "value166": 2097156,
+    "value167": {
+        "id": 1
+    },
+    "value168": 2097157,
+    "value169": {
+        "id": 1
+    },
+    "value170": 4194312,
+    "value171": {
+        "id": 1
+    },
+    "value172": 2097155,
+    "value173": {
+        "id": 1
+    },
+    "value174": 2097159,
+    "value175": {
+        "id": 1
+    },
+    "value176": 9,
+    "value177": {
+        "id": 1
+    },
+    "value178": 10,
+    "value179": {
+        "id": 1
+    },
+    "value180": 11,
+    "value181": {
+        "id": 1
+    },
+    "value182": 12,
+    "value183": {
+        "id": 1
+    },
+    "value184": 13,
+    "value185": {
+        "id": 1
+    },
+    "value186": 14,
+    "value187": {
+        "id": 1
+    },
+    "value188": 15,
+    "value189": {
+        "id": 1
+    },
+    "value190": 16,
+    "value191": {
+        "id": 1
+    },
+    "value192": 17,
+    "value193": {
+        "id": 1
+    },
+    "value194": 18,
+    "value195": {
+        "id": 1
+    },
+    "value196": 19,
+    "value197": {
+        "id": 1
+    },
+    "value198": 20,
+    "value199": {
+        "id": 1
+    },
+    "value200": 21,
+    "value201": {
+        "id": 0
+    },
+    "value202": 21,
+    "value203": 3145729,
+    "value204": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value205": 2097154,
+    "value206": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value207": 2097158,
+    "value208": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value209": 2097156,
+    "value210": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value211": 2097157,
+    "value212": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value213": 4194312,
+    "value214": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value215": 2097155,
+    "value216": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value217": 2097159,
+    "value218": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value219": 9,
+    "value220": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value221": 10,
+    "value222": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value223": 11,
+    "value224": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value225": 12,
+    "value226": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value227": 13,
+    "value228": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value229": 14,
+    "value230": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value231": 15,
+    "value232": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value233": 16,
+    "value234": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value235": 17,
+    "value236": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value237": 18,
+    "value238": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value239": 19,
+    "value240": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value241": 20,
+    "value242": {
+        "current": 100.0,
+        "max": 100.0,
+        "shield": 5.0
+    },
+    "value243": 21,
+    "value244": {
+        "current": 150.0,
+        "max": 150.0,
+        "shield": 0.0
+    },
+    "value245": 20,
+    "value246": 3145729,
+    "value247": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value248": 2097154,
+    "value249": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value250": 2097158,
+    "value251": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value252": 2097156,
+    "value253": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value254": 2097157,
+    "value255": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value256": 4194312,
+    "value257": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value258": 2097155,
+    "value259": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value260": 2097159,
+    "value261": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value262": 9,
+    "value263": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value264": 10,
+    "value265": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value266": 11,
+    "value267": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value268": 12,
+    "value269": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value270": 13,
+    "value271": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value272": 14,
+    "value273": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value274": 15,
+    "value275": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value276": 16,
+    "value277": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value278": 17,
+    "value279": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value280": 18,
+    "value281": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value282": 19,
+    "value283": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value284": 20,
+    "value285": {
+        "damage": 10.0,
+        "range": 4.0,
+        "cooldown": 1.0,
+        "timer": 0.0
+    },
+    "value286": 1,
+    "value287": 21,
+    "value288": {
+        "damage": 50.0,
+        "range": 35.0,
+        "cooldown": 5.0,
+        "timer": 0.0,
+        "projectile_speed": 20.0,
+        "projectile_type": 1,
+        "aoe_radius": 3.0
+    },
+    "value289": 0,
+    "value290": 21,
+    "value291": 3145729,
+    "value292": {
+        "target": 4294967295
+    },
+    "value293": 2097154,
+    "value294": {
+        "target": 4294967295
+    },
+    "value295": 2097158,
+    "value296": {
+        "target": 4294967295
+    },
+    "value297": 2097156,
+    "value298": {
+        "target": 4294967295
+    },
+    "value299": 2097157,
+    "value300": {
+        "target": 4294967295
+    },
+    "value301": 4194312,
+    "value302": {
+        "target": 4294967295
+    },
+    "value303": 2097155,
+    "value304": {
+        "target": 4294967295
+    },
+    "value305": 2097159,
+    "value306": {
+        "target": 4294967295
+    },
+    "value307": 9,
+    "value308": {
+        "target": 4294967295
+    },
+    "value309": 10,
+    "value310": {
+        "target": 4294967295
+    },
+    "value311": 11,
+    "value312": {
+        "target": 4294967295
+    },
+    "value313": 12,
+    "value314": {
+        "target": 4294967295
+    },
+    "value315": 13,
+    "value316": {
+        "target": 4294967295
+    },
+    "value317": 14,
+    "value318": {
+        "target": 4294967295
+    },
+    "value319": 15,
+    "value320": {
+        "target": 4294967295
+    },
+    "value321": 16,
+    "value322": {
+        "target": 4294967295
+    },
+    "value323": 17,
+    "value324": {
+        "target": 4294967295
+    },
+    "value325": 18,
+    "value326": {
+        "target": 4294967295
+    },
+    "value327": 19,
+    "value328": {
+        "target": 4294967295
+    },
+    "value329": 20,
+    "value330": {
+        "target": 4294967295
+    },
+    "value331": 21,
+    "value332": {
+        "target": 4294967295
+    },
+    "value333": 0
+}

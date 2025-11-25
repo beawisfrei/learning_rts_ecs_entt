@@ -68,7 +68,7 @@ void UISystem::renderDebugWindow(World& world, float dt, TimeController& timeCon
 	const char* unit_types[] = {"Footman", "Archer", "Ballista", "Healer"};
 	ImGui::Combo("Unit Type", &_spawnTypeIdx, unit_types, 4);
 	ImGui::SliderInt("Faction", &_spawnFaction, 0, 7);
-	ImGui::SliderInt("Count", &_spawnCount, 1, 100);
+	ImGui::SliderInt("Count", &_spawnCount, 1, 1000);
 	ImGui::Text("Hold S + Drag to spawn");
 	ImGui::Text("Hold D + Drag to delete");
 	

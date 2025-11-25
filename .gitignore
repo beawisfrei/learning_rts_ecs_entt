@@ -1,3 +1,5 @@
 # Folders
 .vs
 out
+*.ini
+/data/saves

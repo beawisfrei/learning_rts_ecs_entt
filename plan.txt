@@ -1,4 +1,6 @@
 * Integrations tests
+-- Test infrastructure is ready but test are not
+-- Data being copied I want to use oroginal; data 
 * Использовать Tag Exclude Approach для движения
 * Нормально реализовать Spatial Grid
 * Нормально реализовать отрисовку

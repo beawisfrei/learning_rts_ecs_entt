@@ -30,7 +30,7 @@ private:
 	int _spawnCount = 10;
 
 	// Save/Load parameters
-	std::string _saveFilePath = "saves/game.json";
+	std::string _saveFilePath = "data/saves/game.json";
 	std::string _saveLoadStatus = "";
 };
 

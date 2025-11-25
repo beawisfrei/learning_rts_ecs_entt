@@ -24,7 +24,7 @@ public:
 	~World() = default;
 
 	// Initialize world with configuration
-	bool Initialize(const nlohmann::json& config);
+	bool Initialize(const nlohmann::json& config, bool enableRender = true);
 
 	// Update gameplay systems
 	void Update(float dt);
