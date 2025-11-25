@@ -10,6 +10,8 @@ public:
 	void init(const nlohmann::json& config);
 	void update(entt::registry& registry);
 	
+	const std::vector<Color>& GetFactionColors() const { return _faction_colors; }
+	
 private:
 	unsigned int _vao = 0;
 	unsigned int _vbo = 0;

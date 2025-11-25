@@ -44,6 +44,9 @@ public:
 	// Get unit statistics
 	UnitCountData GetUnitCounts() const;
 
+	// Get faction colors
+	const std::vector<Color>& GetFactionColors() const;
+
 	// Save/Load game state
 	bool SaveGame(const std::string& filepath);
 	bool LoadGame(const std::string& filepath);

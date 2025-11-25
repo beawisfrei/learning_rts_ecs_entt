@@ -2,11 +2,17 @@
 
 #include <imgui.h>
 #include <string>
+#include <vector>
 #include "../components/components.hpp"
 #include "../world/world.hpp"
 
 class InputSystem;
 class TimeController;
+
+struct UnitInfoLine {
+	std::string text;
+	ImVec4 color;
+};
 
 class UISystem {
 public:
@@ -23,6 +29,7 @@ public:
 private:
 	void renderDebugWindow(World& world, float dt, TimeController& timeController);
 	void renderSelectionRect(World& world, InputSystem& inputSystem);
+	void renderSelectionWindow(World& world);
 
 	// Spawn parameters
 	int _spawnTypeIdx = 0;
@@ -32,5 +39,8 @@ private:
 	// Save/Load parameters
 	std::string _saveFilePath = "data/saves/game.json";
 	std::string _saveLoadStatus = "";
+
+	// Selection window data
+	std::vector<UnitInfoLine> _selectionInfo;
 };
 

@@ -5,6 +5,8 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <cstring>
 #include <cmath>
+#include <sstream>
+#include <iomanip>
 
 void UISystem::Render(World& world, InputSystem& inputSystem, float dt, TimeController& timeController) {
 	// UI Frame
@@ -13,6 +15,7 @@ void UISystem::Render(World& world, InputSystem& inputSystem, float dt, TimeCont
 	ImGui::NewFrame();
 
 	renderDebugWindow(world, dt, timeController);
+	renderSelectionWindow(world);
 	renderSelectionRect(world, inputSystem);
 
 	ImGui::Render();
@@ -169,5 +172,127 @@ void UISystem::renderSelectionRect(World& world, InputSystem& inputSystem) {
 	ImVec2 p2 = world_to_screen(end);
 	
 	draw_list->AddRect(p1, p2, IM_COL32(0, 255, 0, 255), 0.0f, 0, 2.0f);
+}
+
+void UISystem::renderSelectionWindow(World& world) {
+	entt::registry& registry = world.GetRegistry();
+	const std::vector<Color>& factionColors = world.GetFactionColors();
+	
+	// Get all selected units
+	auto selectedView = registry.view<Selected, Unit>();
+	
+	// Collect first 50 selected units
+	std::vector<entt::entity> selectedUnits;
+	selectedUnits.reserve(50);
+	for (auto entity : selectedView) {
+		if (selectedUnits.size() >= 50) {
+			break;
+		}
+		selectedUnits.push_back(entity);
+	}
+	
+	// Resize info array
+	_selectionInfo.resize(selectedUnits.size());
+	
+	// Helper function to format float with 1 decimal place
+	auto formatFloat = [](float value) -> std::string {
+		std::ostringstream oss;
+		oss << std::fixed << std::setprecision(1) << value;
+		return oss.str();
+	};
+	
+	// Populate info for each unit
+	for (size_t i = 0; i < selectedUnits.size(); ++i) {
+		entt::entity entity = selectedUnits[i];
+		UnitInfoLine& info = _selectionInfo[i];
+		
+		// Get unit and faction
+		const auto& unit = registry.get<Unit>(entity);
+		int factionIdx = unit.faction;
+		
+		// Get faction color
+		if (factionIdx >= 0 && factionIdx < static_cast<int>(factionColors.size())) {
+			const Color& color = factionColors[factionIdx];
+			info.color = ImVec4(color.r, color.g, color.b, color.a);
+		} else {
+			info.color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f); // Default white
+		}
+		
+		// Build info string
+		std::ostringstream oss;
+		
+		// Health component
+		if (registry.all_of<Health>(entity)) {
+			const auto& health = registry.get<Health>(entity);
+			oss << "H:" << static_cast<int>(health.current)
+			    << ", M:" << static_cast<int>(health.max)
+			    << ", S:" << static_cast<int>(health.shield)
+			    << ", ";
+		}
+		
+		// Unit component
+		oss << "F:" << unit.faction
+		    << ", T:" << static_cast<int>(unit.type)
+		    << ", ";
+		
+		// Movement component
+		if (registry.all_of<Movement>(entity)) {
+			const auto& movement = registry.get<Movement>(entity);
+			oss << "Sp:" << formatFloat(movement.speed) << ", ";
+		}
+		
+		// DirectDamage component
+		if (registry.all_of<DirectDamage>(entity)) {
+			const auto& damage = registry.get<DirectDamage>(entity);
+			oss << "D:" << formatFloat(damage.damage)
+			    << ", R:" << formatFloat(damage.range)
+			    << ", C:" << formatFloat(damage.cooldown)
+			    << ", ";
+		}
+		
+		// ProjectileEmitter component
+		if (registry.all_of<ProjectileEmitter>(entity)) {
+			const auto& emitter = registry.get<ProjectileEmitter>(entity);
+			oss << "D:" << formatFloat(emitter.damage)
+			    << ", R:" << formatFloat(emitter.range)
+			    << ", C:" << formatFloat(emitter.cooldown)
+			    << ", PS:" << formatFloat(emitter.projectile_speed)
+			    << ", ";
+		}
+		
+		// Healer component
+		if (registry.all_of<Healer>(entity)) {
+			const auto& healer = registry.get<Healer>(entity);
+			oss << "He:" << formatFloat(healer.heal_amount)
+			    << ", R:" << formatFloat(healer.range)
+			    << ", C:" << formatFloat(healer.cooldown)
+			    << ", ";
+		}
+		
+		info.text = oss.str();
+		
+		// Remove trailing comma and space
+		if (!info.text.empty() && info.text.size() >= 2) {
+			if (info.text.substr(info.text.size() - 2) == ", ") {
+				info.text = info.text.substr(0, info.text.size() - 2);
+			}
+		}
+	}
+	
+	// Create ImGui window
+	ImGui::Begin("Selection");
+	
+	// Scrollable child area
+	ImGui::BeginChild("SelectionList", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
+	
+	// Display each unit info line
+	for (const auto& info : _selectionInfo) {
+		ImGui::PushStyleColor(ImGuiCol_Text, info.color);
+		ImGui::Text("%s", info.text.c_str());
+		ImGui::PopStyleColor();
+	}
+	
+	ImGui::EndChild();
+	ImGui::End();
 }
 

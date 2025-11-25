@@ -88,6 +88,14 @@ UnitCountData World::GetUnitCounts() const {
 	return counts;
 }
 
+const std::vector<Color>& World::GetFactionColors() const {
+	static std::vector<Color> empty_colors;
+	if (_renderSystem) {
+		return _renderSystem->GetFactionColors();
+	}
+	return empty_colors;
+}
+
 bool World::SaveGame(const std::string& filepath) {
 	try {
 		// Create directory if it doesn't exist
