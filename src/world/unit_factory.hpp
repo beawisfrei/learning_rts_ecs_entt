@@ -72,6 +72,15 @@ public:
 				float heal_range = unit_config.value("heal_range", 5.0f);
 				float cooldown = unit_config.value("heal_cooldown", 2.0f);
 				registry.emplace<Healer>(entity, heal_amount, heal_range, cooldown, 0.0f);
+				
+				// Follow component instead of Movement - healer follows allies
+				float follow_range = unit_config.value("follow_range", 2.0f);
+				float follow_search_radius = unit_config.value("follow_search_radius", 10.0f);
+				float follow_target_cooldown = unit_config.value("follow_target_cooldown", 2.0f);
+				registry.emplace<Follow>(entity, entt::null, speed, follow_range, follow_search_radius, follow_target_cooldown, 0.0f);
+				
+				// Remove Movement component for healers (added earlier)
+				registry.remove<Movement>(entity);
 				break;
 			}
 		}

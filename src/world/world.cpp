@@ -159,6 +159,7 @@ bool World::SaveGame(const std::string& filepath) {
 			snapshot.get<entt::entity>(archive)
 				.get<Position>(archive)
 				.get<Movement>(archive)
+				.get<Follow>(archive)
 				.get<Color>(archive)
 				.get<Unit>(archive)
 				.get<Camera>(archive)
@@ -211,6 +212,7 @@ bool World::LoadGame(const std::string& filepath) {
 		loader.get<entt::entity>(archive)
 			.get<Position>(archive)
 			.get<Movement>(archive)
+			.get<Follow>(archive)
 			.get<Color>(archive)
 			.get<Unit>(archive)
 			.get<Camera>(archive)
@@ -234,6 +236,17 @@ bool World::LoadGame(const std::string& filepath) {
 				at.target = loader.map(at.target);
 			} else {
 				at.target = entt::null; // Reference died or invalid
+			}
+		}
+		
+		// Post-process: Fix entity references in Follow components
+		auto followView = _registry.view<Follow>();
+		for (auto entity : followView) {
+			auto& follow = followView.get<Follow>(entity);
+			if (follow.target != entt::null && loader.contains(follow.target)) {
+				follow.target = loader.map(follow.target);
+			} else {
+				follow.target = entt::null; // Reference died or invalid
 			}
 		}
 

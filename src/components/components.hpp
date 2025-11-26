@@ -238,3 +238,19 @@ struct SpatialNode {
 		archive(CEREAL_NVP(next), CEREAL_NVP(prev), CEREAL_NVP(cell_index), CEREAL_NVP(faction));
 	}
 };
+
+// Follow component - for units that follow allies (e.g., Healer)
+struct Follow {
+	entt::entity target = entt::null;
+	float speed;
+	float followRange;        // Distance to maintain from target
+	float searchRadius;       // Radius to search for follow targets
+	float targetCooldown;     // Cooldown for target reselection
+	float targetTimer = 0.0f; // Timer for target selection
+
+	template<class Archive>
+	void serialize(Archive &archive) {
+		archive(CEREAL_NVP(target), CEREAL_NVP(speed), CEREAL_NVP(followRange),
+		        CEREAL_NVP(searchRadius), CEREAL_NVP(targetCooldown), CEREAL_NVP(targetTimer));
+	}
+};

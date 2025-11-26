@@ -9,6 +9,7 @@ void GameplaySystem::update(entt::registry& registry, float dt) {
 		return;
 	
 	update_movement(registry, dt);
+	update_follow(registry, dt);
 	update_targeting(registry, dt);
 	update_melee_combat(registry, dt);
 	update_ranged_combat(registry, dt);
@@ -62,6 +63,94 @@ bool GameplaySystem::processMovement(Movement& movement, Position& pos, float dt
 	}
 	
 	return true; // Entity was moved
+}
+
+void GameplaySystem::update_follow(entt::registry& registry, float dt) {
+	ZoneScopedN("GameplaySystem::update_follow");
+	
+	auto view = registry.view<Follow, Position, Faction, SpatialNode>();
+	
+	for (auto entity : view) {
+		auto& follow = view.get<Follow>(entity);
+		auto& pos = view.get<Position>(entity);
+		const auto& faction = view.get<Faction>(entity);
+		
+		// Update target selection timer
+		follow.targetTimer += dt;
+		
+		// Check if we need to select a new target
+		bool needNewTarget = false;
+		if (follow.target == entt::null || !registry.valid(follow.target)) {
+			needNewTarget = true;
+		} else {
+			// Check if target is still alive
+			if (registry.all_of<Health>(follow.target)) {
+				const auto& targetHealth = registry.get<Health>(follow.target);
+				if (targetHealth.current <= 0) {
+					needNewTarget = true;
+				}
+			} else {
+				needNewTarget = true;
+			}
+		}
+		
+		// Select new target if needed and cooldown has passed
+		if (needNewTarget && follow.targetTimer >= follow.targetCooldown) {
+			follow.targetTimer = 0.0f;
+			
+			// Find nearest ally within search radius
+			entt::entity bestTarget = entt::null;
+			float bestDist = follow.searchRadius;
+			
+			_spatial_grid.QueryRadius(pos.value, follow.searchRadius, [&](entt::entity ally) {
+				// Skip self
+				if (ally == entity) return;
+				
+				// Check if ally is valid and alive
+				if (registry.valid(ally) && registry.all_of<Health, Position>(ally)) {
+					const auto& allyHealth = registry.get<Health>(ally);
+					if (allyHealth.current > 0) {
+						const auto& allyPos = registry.get<Position>(ally);
+						float dist = Vec2::distance(pos.value, allyPos.value);
+						if (dist < bestDist) {
+							bestDist = dist;
+							bestTarget = ally;
+						}
+					}
+				}
+			}, faction.id, true); // true = same faction (allies)
+			
+			follow.target = bestTarget;
+		}
+		
+		// Move towards target if we have one
+		if (follow.target != entt::null && registry.valid(follow.target) && 
+		    registry.all_of<Position>(follow.target)) {
+			const auto& targetPos = registry.get<Position>(follow.target);
+			float dist = Vec2::distance(pos.value, targetPos.value);
+			
+			// Only move if we're outside the follow range
+			if (dist > follow.followRange) {
+				Vec2 oldPos = pos.value;
+				
+				// Calculate direction and move
+				Vec2 direction = Vec2::direction_to(pos.value, targetPos.value);
+				Vec2 velocity = direction * follow.speed;
+				pos.value += velocity * dt;
+				
+				// Don't overshoot - stop at follow range distance
+				float newDist = Vec2::distance(pos.value, targetPos.value);
+				if (newDist < follow.followRange) {
+					// Calculate position at follow range from target
+					Vec2 stopDirection = Vec2::direction_to(targetPos.value, pos.value);
+					pos.value = targetPos.value + stopDirection * follow.followRange;
+				}
+				
+				// Update spatial grid
+				_spatial_grid.Update(entity, oldPos, pos.value);
+			}
+		}
+	}
 }
 
 void GameplaySystem::update_targeting(entt::registry& registry, float dt) {

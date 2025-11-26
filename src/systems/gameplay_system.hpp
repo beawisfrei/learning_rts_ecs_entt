@@ -15,6 +15,7 @@ public:
 private:
 	// Individual system updates
 	void update_movement(entt::registry& registry, float dt);
+	void update_follow(entt::registry& registry, float dt);
 	void update_targeting(entt::registry& registry, float dt);
 	void update_melee_combat(entt::registry& registry, float dt);
 	void update_ranged_combat(entt::registry& registry, float dt);
