@@ -21,23 +21,13 @@ protected:
 	}
 
 	// Helper method to create entity with Position and optional Faction, and insert into grid
-	entt::entity createEntity(Vec2 pos, int faction = -1) {
+	entt::entity createEntity(Vec2 pos, int faction = 0) {
 		auto entity = registry.create();
 		registry.emplace<Position>(entity, Position{pos});
-		if (faction >= 0) {
-			registry.emplace<Faction>(entity, Faction{faction});
-		}
-		// Insert into spatial grid
-		grid->Insert(entity, pos);
-		return entity;
-	}
+		registry.emplace<Faction>(entity, Faction{faction});
 
-	// Helper method to create entity with only Position (no Faction), and insert into grid
-	entt::entity createEntityWithoutFaction(Vec2 pos) {
-		auto entity = registry.create();
-		registry.emplace<Position>(entity, Position{pos});
 		// Insert into spatial grid
-		grid->Insert(entity, pos);
+		grid->Insert(entity, pos, faction);
 		return entity;
 	}
 
@@ -74,7 +64,7 @@ TEST_F(SpatialGridTest, Insert_AddsEntityToGrid) {
 	auto e1 = registry.create();
 	registry.emplace<Position>(e1, Position{Vec2(5.0f, 5.0f)});
 	
-	grid->Insert(e1, Vec2(5.0f, 5.0f));
+	grid->Insert(e1, Vec2(5.0f, 5.0f), 0);
 	
 	EXPECT_TRUE(registry.all_of<SpatialNode>(e1));
 	const auto& node = registry.get<SpatialNode>(e1);
@@ -385,15 +375,6 @@ TEST_F(SpatialGridTest, FindNearest_FactionFilterNoFilter) {
 	EXPECT_EQ(result, e1);  // Should find nearest regardless of faction
 }
 
-TEST_F(SpatialGridTest, FindNearest_IgnoresEntitiesWithoutFaction) {
-	createEntityWithoutFaction(Vec2(5.0f, 5.0f));  // No Faction component
-	auto e2 = createEntity(Vec2(10.0f, 10.0f), 0);  // Has Faction
-
-	auto result = grid->FindNearest(Vec2(0.0f, 0.0f), 100.0f);
-
-	EXPECT_EQ(result, e2);  // Should only consider entities with Faction
-}
-
 TEST_F(SpatialGridTest, FindNearest_TieBreakingMultipleEntitiesAtSameDistance) {
 	// Create entities at same distance from origin
 	auto e1 = createEntity(Vec2(5.0f, 0.0f), 0);
@@ -561,19 +542,6 @@ TEST_F(SpatialGridTest, QueryRadius_FactionFilterNoFilter) {
 	EXPECT_TRUE(containsEntity(result, e1));
 	EXPECT_TRUE(containsEntity(result, e2));
 	EXPECT_TRUE(containsEntity(result, e3));
-}
-
-TEST_F(SpatialGridTest, QueryRadius_IgnoresEntitiesWithoutFaction) {
-	createEntityWithoutFaction(Vec2(5.0f, 5.0f));  // No Faction component
-	auto e2 = createEntity(Vec2(10.0f, 10.0f), 0);  // Has Faction
-
-	std::vector<entt::entity> result;
-	grid->QueryRadius(Vec2(0.0f, 0.0f), 20.0f, [&](entt::entity e) {
-		result.push_back(e);
-	});
-
-	EXPECT_EQ(result.size(), 1);
-	EXPECT_TRUE(containsEntity(result, e2));
 }
 
 TEST_F(SpatialGridTest, QueryRadius_OrderIndependence) {

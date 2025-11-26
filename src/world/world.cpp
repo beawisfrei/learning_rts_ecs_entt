@@ -75,10 +75,10 @@ entt::entity World::SpawnUnit(UnitType type, int faction, const Vec2& position) 
 
 	auto entity = _unitFactory->spawn_unit(_registry, type, faction, position);
 	
-	// Insert entity into spatial grid
+	// Insert entity into spatial grid with faction
 	if (_spatialGrid && _registry.all_of<Position>(entity)) {
 		const auto& pos = _registry.get<Position>(entity);
-		_spatialGrid->Insert(entity, pos.value);
+		_spatialGrid->Insert(entity, pos.value, faction);
 	}
 	
 	return entity;

@@ -8,6 +8,8 @@
 #include <cereal/cereal.hpp>
 #include <cereal/types/string.hpp>
 
+constexpr int MAX_FACTIONS = 3;
+
 struct Position {
 	Vec2 value;
 
@@ -229,9 +231,10 @@ struct SpatialNode {
 	entt::entity next = entt::null;
 	entt::entity prev = entt::null;
 	int cell_index = -1;
+	int faction = -1; // Track which faction grid this entity is in
 
 	template<class Archive>
 	void serialize(Archive &archive) {
-		archive(CEREAL_NVP(next), CEREAL_NVP(prev), CEREAL_NVP(cell_index));
+		archive(CEREAL_NVP(next), CEREAL_NVP(prev), CEREAL_NVP(cell_index), CEREAL_NVP(faction));
 	}
 };
