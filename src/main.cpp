@@ -70,17 +70,8 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	// Create some initial test units
-	world.SpawnUnit(UnitType::Footman, 0, Vec2{-10.0f, 0.0f});
-	world.SpawnUnit(UnitType::Footman, 0, Vec2{-10.0f, 5.0f});
-	world.SpawnUnit(UnitType::Archer, 0, Vec2{-10.0f, -5.0f});
-	
-	world.SpawnUnit(UnitType::Footman, 1, Vec2{10.0f, 0.0f});
-	world.SpawnUnit(UnitType::Archer, 1, Vec2{10.0f, 5.0f});
-	world.SpawnUnit(UnitType::Ballista, 1, Vec2{10.0f, -5.0f});
-	
-	world.SpawnUnit(UnitType::Healer, 0, Vec2{-15.0f, 0.0f});
-	
+	world.LoadGame("data/saves/default.json");
+
 	InputSystem inputSystem;
 	inputSystem.set_screen_dimensions(screen_width, screen_height);
 	UISystem uiSystem;

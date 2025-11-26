@@ -13,7 +13,7 @@ void GameplaySystem::update(entt::registry& registry, float dt) {
 }
 
 void GameplaySystem::update_movement(entt::registry& registry, float dt) {
-	auto view = registry.view<Movement, Position>();
+	auto view = registry.view<Movement, Position>(entt::exclude<StateAttackingTag>); // Attacking units are not moved
 	
 	for (auto entity : view) {
 		auto& movement = view.get<Movement>(entity);
@@ -21,18 +21,7 @@ void GameplaySystem::update_movement(entt::registry& registry, float dt) {
 		
 		// Store old position for grid update
 		Vec2 old_pos = pos.value;
-		
-		// Only move if state is Moving
-		if (movement.state != MovementState::Moving) {
-			continue;
-		}
-		
-		// Calculate direction to target
-		Vec2 dir = Vec2::direction_to(pos.value, movement.target);
-		
-		// Update velocity
-		movement.velocity = dir * movement.speed;
-		
+				
 		// Update position
 		pos.value += movement.velocity * dt;
 		
@@ -45,8 +34,8 @@ void GameplaySystem::update_movement(entt::registry& registry, float dt) {
 		float dist = Vec2::distance(pos.value, movement.target);
 		if (dist < 0.5f) {
 			// Reached target, stop moving
-			movement.state = MovementState::NotMoving;
 			movement.velocity = Vec2{0.0f, 0.0f};
+			movement.target = pos.value;
 		}
 	}
 }
@@ -72,6 +61,7 @@ void GameplaySystem::update_targeting(entt::registry& registry, float dt) {
 		bool need_new_target = false;
 		if (target_comp.target == entt::null || !registry.valid(target_comp.target)) {
 			need_new_target = true;
+			target_comp.target = entt::null;
 		} else {
 			// Check if target is alive and in range
 			if (registry.all_of<Health, Position>(target_comp.target)) {
@@ -96,20 +86,15 @@ void GameplaySystem::update_targeting(entt::registry& registry, float dt) {
 			entt::entity new_target = _spatial_grid.FindNearest(pos.value, damage.range, faction.id, false);
 			target_comp.target = new_target;
 		}
-		
-		// Update movement state based on target
-		if (registry.all_of<Movement>(entity)) {
-			auto& movement = registry.get<Movement>(entity);
-			if (target_comp.target != entt::null && registry.valid(target_comp.target)) {
-				// Has valid target, pause movement
-				if (movement.state == MovementState::Moving) {
-					movement.state = MovementState::Paused;
-				}
-			} else {
-				// No valid target, resume movement if paused
-				if (movement.state == MovementState::Paused) {
-					movement.state = MovementState::Moving;
-				}
+
+		// Sync stage attacking tag
+		if (target_comp.target != entt::null) {
+			if (!registry.all_of<StateAttackingTag>(entity)) {
+				registry.emplace<StateAttackingTag>(entity);
+			}
+		} else {
+			if (registry.all_of<StateAttackingTag>(entity)) {
+				registry.remove<StateAttackingTag>(entity);
 			}
 		}
 	}
@@ -151,47 +136,22 @@ void GameplaySystem::update_targeting(entt::registry& registry, float dt) {
 			target_comp.target = new_target;
 		}
 		
-		// Update movement state based on target
-		if (registry.all_of<Movement>(entity)) {
-			auto& movement = registry.get<Movement>(entity);
-			if (target_comp.target != entt::null && registry.valid(target_comp.target)) {
-				// Has valid target, pause movement
-				if (movement.state == MovementState::Moving) {
-					movement.state = MovementState::Paused;
-				}
-			} else {
-				// No valid target, resume movement if paused
-				if (movement.state == MovementState::Paused) {
-					movement.state = MovementState::Moving;
-				}
+		// Sync stage attacking tag
+		if (target_comp.target != entt::null) {
+			if (!registry.all_of<StateAttackingTag>(entity)) {
+				registry.emplace<StateAttackingTag>(entity);
 			}
 		}
-	}
-	
-	// Update movement for entities with AttackTarget but without DirectDamage or ProjectileEmitter
-	// This handles any other unit types that might have attack targets but different combat components
-	auto movement_view = registry.view<Movement, AttackTarget>(entt::exclude<DirectDamage, ProjectileEmitter>);
-	for (auto entity : movement_view) {
-		auto& movement = movement_view.get<Movement>(entity);
-		const auto& target_comp = movement_view.get<AttackTarget>(entity);
-		
-		// Update movement state based on target
-		if (target_comp.target != entt::null && registry.valid(target_comp.target)) {
-			// Has valid target, pause movement
-			if (movement.state == MovementState::Moving) {
-				movement.state = MovementState::Paused;
-			}
-		} else {
-			// No valid target, resume movement if paused
-			if (movement.state == MovementState::Paused) {
-				movement.state = MovementState::Moving;
+		else {
+			if (registry.all_of<StateAttackingTag>(entity)) {
+				registry.remove<StateAttackingTag>(entity);
 			}
 		}
 	}
 }
 
 void GameplaySystem::update_melee_combat(entt::registry& registry, float dt) {
-	auto view = registry.view<DirectDamage, AttackTarget, Position, Faction>();
+	auto view = registry.view<DirectDamage, AttackTarget, StateAttackingTag, Position, Faction>();
 	
 	for (auto entity : view) {
 		auto& damage_comp = view.get<DirectDamage>(entity);
@@ -213,10 +173,7 @@ void GameplaySystem::update_melee_combat(entt::registry& registry, float dt) {
 					if (dist <= damage_comp.range) {
 						// Deal damage
 						auto& target_health = registry.get<Health>(target_comp.target);
-						float actual_damage = damage_comp.damage - target_health.shield;
-						if (actual_damage > 0) {
-							target_health.current -= actual_damage;
-						}
+						target_health.Damage(damage_comp.damage);
 
 						// Reset timer
 						damage_comp.timer = 0.0f;
@@ -228,7 +185,7 @@ void GameplaySystem::update_melee_combat(entt::registry& registry, float dt) {
 }
 
 void GameplaySystem::update_ranged_combat(entt::registry& registry, float dt) {
-	auto view = registry.view<ProjectileEmitter, AttackTarget, Position, Faction>();
+	auto view = registry.view<ProjectileEmitter, AttackTarget, StateAttackingTag, Position, Faction>();
 	
 	for (auto entity : view) {
 		auto& emitter = view.get<ProjectileEmitter>(entity);
@@ -263,10 +220,9 @@ void GameplaySystem::update_ranged_combat(entt::registry& registry, float dt) {
 
 						// Add Movement component for projectile
 						registry.emplace<Movement>(projectile, 
-							Vec2{0.0f, 0.0f},           // velocity (will be calculated by movement system)
-							target_pos.value,            // target
-							emitter.projectile_speed,    // speed
-							MovementState::Moving        // state = Moving
+							Vec2::direction_to(pos.value, target_pos.value) * emitter.projectile_speed, // velocity 
+							target_pos.value,           // target
+							emitter.projectile_speed    // speed
 						);
 
 						// For rendering - create a simple visual
@@ -301,11 +257,8 @@ void GameplaySystem::update_healer(entt::registry& registry, float dt) {
 				if (registry.valid(ally) && registry.all_of<Health>(ally)) {
 					auto& health = registry.get<Health>(ally);
 					// Only heal if not at full health
-					if (health.current < health.max) {
-						health.current += healer.heal_amount;
-						if (health.current > health.max) {
-							health.current = health.max;
-						}
+					if (!health.IsFullHealth()) {
+						health.Heal(healer.heal_amount);
 						found_allies = true;
 					}
 				}
@@ -331,7 +284,7 @@ void GameplaySystem::update_projectiles(entt::registry& registry, float dt) {
 
 		// Check if reached target (movement system handles actual movement)
 		// Movement system stops movement when dist < 0.5f, so we check if state is NotMoving
-		if (movement.state == MovementState::NotMoving) {
+		if (movement.velocity.isZero()) {
 			// Projectile hit
 			if (projectile.is_aoe) {
 				// AOE damage
@@ -350,10 +303,7 @@ void GameplaySystem::update_projectiles(entt::registry& registry, float dt) {
 				if (target != entt::null && registry.valid(target)) {
 					if (registry.all_of<Health>(target)) {
 						auto& health = registry.get<Health>(target);
-						float actual_damage = projectile.damage - health.shield;
-						if (actual_damage > 0) {
-							health.current -= actual_damage;
-						}
+						health.Damage(projectile.damage);
 					}
 				}
 			}
@@ -364,11 +314,7 @@ void GameplaySystem::update_projectiles(entt::registry& registry, float dt) {
 	}
 
 	// Destroy projectiles that hit
-	for (auto entity : to_destroy) {
-		if (registry.valid(entity)) {
-			registry.destroy(entity);
-		}
-	}
+	registry.destroy(to_destroy.begin(), to_destroy.end());
 }
 
 void GameplaySystem::update_death(entt::registry& registry, float dt) {

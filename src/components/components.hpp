@@ -17,25 +17,20 @@ struct Position {
 	}
 };
 
-enum class MovementState {
-	NotMoving,
-	Paused,
-	Moving
-};
-
 struct Movement {
 	Vec2 velocity;
 	Vec2 target;
 	float speed;
-	MovementState state;
+
+	void MoveTo(const Vec2& currentPos, const Vec2& newPos) {
+		target = newPos;
+		Vec2 direction = Vec2::direction_to(currentPos, newPos);
+		velocity = direction * speed;
+	}
 
 	template<class Archive>
 	void serialize(Archive &archive) {
 		archive(CEREAL_NVP(velocity), CEREAL_NVP(target), CEREAL_NVP(speed));
-		// Serialize enum as int
-		int stateInt = static_cast<int>(state);
-		archive(CEREAL_NVP(stateInt));
-		state = static_cast<MovementState>(stateInt);
 	}
 };
 
@@ -113,6 +108,21 @@ struct Health {
 	float max;
 	float shield;
 
+	bool IsFullHealth() const {
+		return current >= max;
+	}
+
+	void Heal(float amount) {
+		current += amount;
+		if (current > max) {
+			current = max;
+		}
+	}
+
+	void Damage(float amount) {
+		current = std::max(0.0f, current - std::max(0.0f, amount - shield));
+	}
+
 	template<class Archive>
 	void serialize(Archive &archive) {
 		archive(CEREAL_NVP(current), CEREAL_NVP(max), CEREAL_NVP(shield));
@@ -170,6 +180,14 @@ struct AttackTarget {
 	void serialize(Archive &archive) {
 		// Serialize entity as underlying integer type
 		archive(CEREAL_NVP(target));
+	}
+};
+
+// Tag for units that are attacking
+struct StateAttackingTag {
+	template<class Archive>
+	void serialize(Archive &archive) {
+		// Empty tag component
 	}
 };
 

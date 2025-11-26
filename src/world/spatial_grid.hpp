@@ -22,6 +22,9 @@ public:
 	// O(1) - The "Movement System" calls this
 	void Update(entt::entity entity, const Vec2& old_pos, const Vec2& new_pos);
 
+	// Just clears vector of entities
+	void Clear();
+
 	// Query all entities within a rectangle
 	void QueryRect(const Vec2& min, const Vec2& max, EntityCallback callback);
 
@@ -30,6 +33,10 @@ public:
 
 	// Find all entities within a radius (with optional faction filter)
 	void QueryRadius(const Vec2& pos, float radius, EntityCallback callback, int faction = -1, bool same_faction = false);
+
+	// Get world dimensions
+	int GetWidth() const { return _width; }
+	int GetHeight() const { return _height; }
 
 private:
 	// Internal function that queries cells and applies a filter function

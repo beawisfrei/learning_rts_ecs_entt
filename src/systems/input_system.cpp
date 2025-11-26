@@ -36,7 +36,7 @@ void InputSystem::process_event(const SDL_Event& event) {
 		if (event.key.key == SDLK_D) _d_down = false;
 		if (event.key.key == SDLK_M) _m_down = false;
     } else if (event.type == SDL_EVENT_MOUSE_WHEEL) {
-        // Handle Zoom...
+        _scroll_delta += event.wheel.y;
     }
 }
 
@@ -97,10 +97,7 @@ void InputSystem::issue_move_command(entt::registry& registry, const Vec2& click
 		Vec2 offset = pos.value - bounding_box_center;
 		
 		// Set target position = click position + offset
-		movement.target = click_world_pos + offset;
-		
-		// Set movement state to Moving
-		movement.state = MovementState::Moving;
+		movement.MoveTo(pos.value, click_world_pos + offset);
 	}
 }
 
@@ -116,12 +113,38 @@ void InputSystem::update(World& world, float dt) {
         camera = cam_view.get<Camera>(entity);
 
         // Pan logic (Space + Mouse Move)
-        if (_space_down && !_is_dragging) {
+        if (_right_mouse_down && !_is_dragging) {
             float dx = _mouse_x - _last_mouse_x;
             float dy = _mouse_y - _last_mouse_y;
             camera.offset -= Vec2{dx / camera.zoom, -dy / camera.zoom};
 			cam_view.get<Camera>(entity) = camera;
         }
+		
+		// Zoom logic (Mouse Scroll) - zoom centered at mouse position
+		if (_scroll_delta != 0.0f) {
+			// Get world position under mouse BEFORE zoom change
+			Vec2 world_pos_before = screen_to_world(_mouse_x, _mouse_y, camera, _screen_width, _screen_height);
+			
+			// Apply zoom (multiply by factor per scroll step)
+			float zoom_factor = 1.1f;
+			if (_scroll_delta > 0) {
+				camera.zoom *= std::pow(zoom_factor, _scroll_delta);
+			} else {
+				camera.zoom *= std::pow(1.0f / zoom_factor, -_scroll_delta);
+			}
+			
+			// Clamp zoom to reasonable range
+			camera.zoom = std::max(0.1f, std::min(10.0f, camera.zoom));
+			
+			// Get world position under mouse AFTER zoom change (with old offset)
+			Vec2 world_pos_after = screen_to_world(_mouse_x, _mouse_y, camera, _screen_width, _screen_height);
+			
+			// Adjust offset so the original world position stays under the mouse
+			camera.offset += world_pos_before - world_pos_after;
+			
+			cam_view.get<Camera>(entity) = camera;
+			_scroll_delta = 0.0f;
+		}
 		break;
     }
 	

@@ -36,6 +36,9 @@ alwaysApply: true
   - Format: `functionName`
   - Example: `updateInternal()`, `calculateDistance()`, `loadResources()`
 
+## Standard 
+- Use Vec2 class (from vec2.hpp) and it methods for operations with 2D vectors 
+
 ## Summary Table
 
 | Element | Convention | Example |

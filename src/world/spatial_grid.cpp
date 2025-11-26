@@ -61,6 +61,11 @@ void SpatialGrid::Update(entt::entity entity, const Vec2& old_pos, const Vec2& n
 	}
 }
 
+void SpatialGrid::Clear() {
+	_cells.clear();
+	_cells.resize(_cols * _rows, entt::null);
+}
+
 void SpatialGrid::QueryRect(const Vec2& min, const Vec2& max, EntityCallback callback) {
 	queryCells(min, max, [this, &min, &max](entt::entity e) {
 		if (!_registry.all_of<Position>(e)) return false;

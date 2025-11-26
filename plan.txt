@@ -1,8 +1,8 @@
-* Использовать Tag Exclude Approach для движения
 * Доделать реализацию SpatialGrid
-  - Оптимизация Move
-  - Faction Wise Grid
-  - Faction enum
+  - Оптимизация Move (сейчас Add Remove а надо делать какой-то Swap)
+  - Faction-Wise Grid
+  - Faction enum. Плюс оптимизация - количество фракуий.
+  - Объединение Position и SpatialGrid - хотя.. Projectile-то не в SpatialGrid =)
+* Add Tracy support to see the perfromance
 * Нормально реализовать отрисовку
 * Сделатать так, чтобы Unit_factory не читала json каждый раз
-* Add Tracy support to see the perfromance

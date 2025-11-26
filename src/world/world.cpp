@@ -42,6 +42,7 @@ bool World::Initialize(const nlohmann::json& config, bool enableRender) {
 	if (enableRender) {
 		_renderSystem = new RenderSystem();
 		_renderSystem->init(config);
+		_renderSystem->SetWorldBounds(world_width, world_height);
 	}
 
 	// Create camera entity
@@ -63,6 +64,15 @@ void World::Render() {
 }
 
 entt::entity World::SpawnUnit(UnitType type, int faction, const Vec2& position) {
+	// Check if position is within world bounds
+	if (_spatialGrid) {
+		if (position.x < 0 || position.x >= _spatialGrid->GetWidth() ||
+			position.y < 0 || position.y >= _spatialGrid->GetHeight()) {
+			// Position is outside world borders, skip unit creation
+			return entt::null;
+		}
+	}
+
 	auto entity = _unitFactory->spawn_unit(_registry, type, faction, position);
 	
 	// Insert entity into spatial grid
@@ -156,7 +166,8 @@ bool World::SaveGame(const std::string& filepath) {
 				.get<ProjectileEmitter>(archive)
 				.get<Healer>(archive)
 				.get<AttackTarget>(archive)
-				.get<Projectile>(archive);
+				.get<Projectile>(archive)
+				.get<StateAttackingTag>(archive);
 		}
 
 		os.close();
@@ -184,6 +195,7 @@ bool World::LoadGame(const std::string& filepath) {
 
 		// Clear current registry
 		_registry.clear();
+		_spatialGrid->Clear();
 		_cameraEntity = entt::null;
 
 		// Create JSON input archive
@@ -206,7 +218,8 @@ bool World::LoadGame(const std::string& filepath) {
 			.get<ProjectileEmitter>(archive)
 			.get<Healer>(archive)
 			.get<AttackTarget>(archive)
-			.get<Projectile>(archive);
+			.get<Projectile>(archive)
+			.get<StateAttackingTag>(archive);
 
 		// Post-process: Fix entity references in AttackTarget components
 		// The continuous_loader automatically handles entity remapping internally,

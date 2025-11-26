@@ -39,6 +39,8 @@ private:
 	bool _d_down = false;
 	bool _m_down = false;
 	
+	float _scroll_delta = 0.0f;
+	
     float _mouse_x = 0.0f;
     float _mouse_y = 0.0f;
     float _last_mouse_x = 0.0f;

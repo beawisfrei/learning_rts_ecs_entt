@@ -27,7 +27,7 @@ public:
 		
 		// Add Movement component with speed from config
 		float speed = unit_config.value("speed", 10.0f);
-		registry.emplace<Movement>(entity, Vec2{0.0f, 0.0f}, Vec2{0.0f, 0.0f}, speed, MovementState::NotMoving);
+		registry.emplace<Movement>(entity, Vec2{0.0f, 0.0f}, position, speed);
 
 		// Add Health component (all units have health)
 		float max_hp = unit_config.value("hp", 100.0f);

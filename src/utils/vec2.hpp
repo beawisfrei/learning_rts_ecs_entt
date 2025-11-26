@@ -65,6 +65,10 @@ struct Vec2 {
 		return x != other.x || y != other.y;
 	}
 
+	bool isZero() const {
+		return x == 0.0f && y == 0.0f;
+	}
+
 	// Serialization for Cereal
 	template<class Archive>
 	void serialize(Archive &archive) {

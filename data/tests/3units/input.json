@@ -1,61 +1,60 @@
 {
-    "value0": 9,
+    "value0": 8,
     "value1": 7,
-    "value2": 0,
-    "value3": 1048577,
-    "value4": 1048578,
-    "value5": 1048582,
-    "value6": 1048580,
-    "value7": 1048581,
-    "value8": 3145736,
-    "value9": 2097155,
-    "value10": 2097159,
-    "value11": 6,
-    "value12": 1048577,
-    "value13": {
+    "value2": 3145728,
+    "value3": 2097157,
+    "value4": 2097154,
+    "value5": 2097156,
+    "value6": 2097153,
+    "value7": 2097159,
+    "value8": 2097158,
+    "value9": 3145731,
+    "value10": 6,
+    "value11": 2097157,
+    "value12": {
         "value": {
-            "x": -12.958677291870118,
+            "x": 12.958677291870118,
             "y": 4.297521114349365
         }
     },
-    "value14": 1048578,
-    "value15": {
+    "value13": 2097154,
+    "value14": {
         "value": {
-            "x": -15.272726058959961,
+            "x": 15.272726058959961,
             "y": 3.8347110748291017
         }
     },
-    "value16": 1048582,
-    "value17": {
+    "value15": 2097156,
+    "value16": {
         "value": {
-            "x": -9.538461685180664,
+            "x": 9.538461685180664,
             "y": 3.692307472229004
         }
     },
-    "value18": 1048580,
-    "value19": {
+    "value17": 2097153,
+    "value18": {
         "value": {
-            "x": -17.190082550048829,
+            "x": 17.190082550048829,
             "y": 4.429751873016357
         }
     },
-    "value20": 1048581,
-    "value21": {
+    "value19": 2097159,
+    "value20": {
         "value": {
-            "x": -11.076923370361329,
+            "x": 11.076923370361329,
             "y": 3.7802188396453859
         }
     },
-    "value22": 3145736,
-    "value23": {
+    "value21": 2097158,
+    "value22": {
         "value": {
-            "x": -8.571427345275879,
+            "x": 8.571427345275879,
             "y": 3.032966375350952
         }
     },
-    "value24": 6,
-    "value25": 1048577,
-    "value26": {
+    "value23": 6,
+    "value24": 2097157,
+    "value25": {
         "velocity": {
             "x": 0.0,
             "y": 0.0
@@ -64,11 +63,10 @@
             "x": 0.0,
             "y": 0.0
         },
-        "speed": 10.0,
-        "stateInt": 0
+        "speed": 10.0
     },
-    "value27": 1048578,
-    "value28": {
+    "value26": 2097154,
+    "value27": {
         "velocity": {
             "x": 0.0,
             "y": 0.0
@@ -77,11 +75,10 @@
             "x": 0.0,
             "y": 0.0
         },
-        "speed": 12.0,
-        "stateInt": 0
+        "speed": 12.0
     },
-    "value29": 1048582,
-    "value30": {
+    "value28": 2097156,
+    "value29": {
         "velocity": {
             "x": 0.0,
             "y": 0.0
@@ -90,11 +87,10 @@
             "x": 0.0,
             "y": 0.0
         },
-        "speed": 12.0,
-        "stateInt": 0
+        "speed": 12.0
     },
-    "value31": 1048580,
-    "value32": {
+    "value30": 2097153,
+    "value31": {
         "velocity": {
             "x": 0.0,
             "y": 0.0
@@ -103,11 +99,10 @@
             "x": 0.0,
             "y": 0.0
         },
-        "speed": 10.0,
-        "stateInt": 0
+        "speed": 10.0
     },
-    "value33": 1048581,
-    "value34": {
+    "value32": 2097159,
+    "value33": {
         "velocity": {
             "x": 0.0,
             "y": 0.0
@@ -116,11 +111,10 @@
             "x": 0.0,
             "y": 0.0
         },
-        "speed": 10.0,
-        "stateInt": 0
+        "speed": 10.0
     },
-    "value35": 3145736,
-    "value36": {
+    "value34": 2097158,
+    "value35": {
         "velocity": {
             "x": 0.0,
             "y": 0.0
@@ -129,132 +123,131 @@
             "x": 0.0,
             "y": 0.0
         },
-        "speed": 10.0,
-        "stateInt": 0
+        "speed": 10.0
     },
-    "value37": 0,
-    "value38": 6,
-    "value39": 1048577,
-    "value40": {
+    "value36": 0,
+    "value37": 6,
+    "value38": 2097157,
+    "value39": {
         "typeInt": 0,
         "faction": 0
     },
-    "value41": 1048578,
-    "value42": {
+    "value40": 2097154,
+    "value41": {
         "typeInt": 1,
         "faction": 0
     },
-    "value43": 1048582,
-    "value44": {
+    "value42": 2097156,
+    "value43": {
         "typeInt": 1,
         "faction": 1
     },
-    "value45": 1048580,
-    "value46": {
+    "value44": 2097153,
+    "value45": {
         "typeInt": 3,
         "faction": 0
     },
-    "value47": 1048581,
-    "value48": {
+    "value46": 2097159,
+    "value47": {
         "typeInt": 0,
         "faction": 1
     },
-    "value49": 3145736,
-    "value50": {
+    "value48": 2097158,
+    "value49": {
         "typeInt": 3,
         "faction": 1
     },
-    "value51": 1,
-    "value52": 0,
-    "value53": {
+    "value50": 1,
+    "value51": 3145728,
+    "value52": {
         "offset": {
             "x": 0.0,
             "y": 0.0
         },
         "zoom": 18.200000762939454
     },
-    "value54": 1,
-    "value55": 0,
-    "value56": 6,
-    "value57": 1048577,
-    "value58": {
+    "value53": 1,
+    "value54": 3145728,
+    "value55": 6,
+    "value56": 2097157,
+    "value57": {
         "id": 0
     },
-    "value59": 1048578,
-    "value60": {
+    "value58": 2097154,
+    "value59": {
         "id": 0
     },
-    "value61": 1048582,
-    "value62": {
+    "value60": 2097156,
+    "value61": {
         "id": 1
     },
-    "value63": 1048580,
-    "value64": {
+    "value62": 2097153,
+    "value63": {
         "id": 0
     },
-    "value65": 1048581,
-    "value66": {
+    "value64": 2097159,
+    "value65": {
         "id": 1
     },
-    "value67": 3145736,
-    "value68": {
+    "value66": 2097158,
+    "value67": {
         "id": 1
     },
-    "value69": 6,
-    "value70": 1048577,
-    "value71": {
+    "value68": 6,
+    "value69": 2097157,
+    "value70": {
         "current": 100.0,
         "max": 100.0,
         "shield": 5.0
     },
-    "value72": 1048578,
-    "value73": {
+    "value71": 2097154,
+    "value72": {
         "current": 60.0,
         "max": 60.0,
         "shield": 2.0
     },
-    "value74": 1048582,
-    "value75": {
+    "value73": 2097156,
+    "value74": {
         "current": 60.0,
         "max": 60.0,
         "shield": 2.0
     },
-    "value76": 1048580,
-    "value77": {
+    "value75": 2097153,
+    "value76": {
         "current": 50.0,
         "max": 50.0,
         "shield": 0.0
     },
-    "value78": 1048581,
-    "value79": {
+    "value77": 2097159,
+    "value78": {
         "current": 100.0,
         "max": 100.0,
         "shield": 5.0
     },
-    "value80": 3145736,
-    "value81": {
+    "value79": 2097158,
+    "value80": {
         "current": 50.0,
         "max": 50.0,
         "shield": 0.0
     },
-    "value82": 2,
-    "value83": 1048577,
-    "value84": {
+    "value81": 2,
+    "value82": 2097157,
+    "value83": {
         "damage": 10.0,
         "range": 4.0,
         "cooldown": 1.0,
         "timer": 0.0
     },
-    "value85": 1048581,
-    "value86": {
+    "value84": 2097159,
+    "value85": {
         "damage": 10.0,
         "range": 4.0,
         "cooldown": 1.0,
         "timer": 0.0
     },
-    "value87": 2,
-    "value88": 1048578,
-    "value89": {
+    "value86": 2,
+    "value87": 2097154,
+    "value88": {
         "damage": 8.0,
         "range": 20.0,
         "cooldown": 2.0,
@@ -263,8 +256,8 @@
         "projectile_type": 0,
         "aoe_radius": 0.0
     },
-    "value90": 1048582,
-    "value91": {
+    "value89": 2097156,
+    "value90": {
         "damage": 8.0,
         "range": 20.0,
         "cooldown": 2.0,
@@ -273,37 +266,38 @@
         "projectile_type": 0,
         "aoe_radius": 0.0
     },
-    "value92": 2,
-    "value93": 1048580,
-    "value94": {
+    "value91": 2,
+    "value92": 2097153,
+    "value93": {
         "heal_amount": 10.0,
         "range": 5.0,
         "cooldown": 2.0,
         "timer": 0.0
     },
-    "value95": 3145736,
-    "value96": {
+    "value94": 2097158,
+    "value95": {
         "heal_amount": 10.0,
         "range": 5.0,
         "cooldown": 2.0,
         "timer": 0.0
     },
-    "value97": 4,
-    "value98": 1048577,
-    "value99": {
+    "value96": 4,
+    "value97": 2097157,
+    "value98": {
         "target": 4294967295
     },
-    "value100": 1048578,
-    "value101": {
+    "value99": 2097154,
+    "value100": {
         "target": 4294967295
     },
-    "value102": 1048582,
-    "value103": {
+    "value101": 2097156,
+    "value102": {
         "target": 4294967295
     },
-    "value104": 1048581,
-    "value105": {
+    "value103": 2097159,
+    "value104": {
         "target": 4294967295
     },
+    "value105": 0,
     "value106": 0
 }

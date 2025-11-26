@@ -5,7 +5,8 @@
         "target_selection_interval": 1.0,
         "unit_size": 1.0,
         "tile_size": 1,
-        "cell_size": 5
+        "cell_size": 5,
+        "world_border_color": [0, 153, 0, 255]
     },
     "factions": [
         { "id": 0, "color": [255, 0, 0, 255] },
