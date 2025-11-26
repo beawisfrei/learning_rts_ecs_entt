@@ -1,8 +1,10 @@
 #include "gameplay_system.hpp"
 #include "../world/spatial_grid.hpp"
+#include "../utils/profiler.hpp"
 #include <iostream>
 
 void GameplaySystem::update(entt::registry& registry, float dt) {
+	ZoneScopedNC("GameplaySystem::update", TRACY_COLOR_UPDATE);
 	if (dt == 0.0f)
 		return;
 	
@@ -16,34 +18,54 @@ void GameplaySystem::update(entt::registry& registry, float dt) {
 }
 
 void GameplaySystem::update_movement(entt::registry& registry, float dt) {
-	auto view = registry.view<Movement, Position>(entt::exclude<StateAttackingTag>); // Attacking units are not moved
+	ZoneScopedN("GameplaySystem::update_movement");
 	
-	for (auto entity : view) {
-		auto& movement = view.get<Movement>(entity);
-		auto& pos = view.get<Position>(entity);
+	// Process entities with SpatialNode (need grid update)
+	auto view_with_spatial = registry.view<Movement, Position, SpatialNode>(entt::exclude<StateAttackingTag>);
+	for (auto entity : view_with_spatial) {
+		auto& movement = view_with_spatial.get<Movement>(entity);
+		auto& pos = view_with_spatial.get<Position>(entity);
 		
-		// Store old position for grid update
 		Vec2 old_pos = pos.value;
-				
-		// Update position
-		pos.value += movement.velocity * dt;
-		
-		// Update spatial grid if entity has SpatialNode
-		if (registry.all_of<SpatialNode>(entity)) {
+		if (processMovement(movement, pos, dt)) {
 			_spatial_grid.Update(entity, old_pos, pos.value);
 		}
+	}
+	
+	// Process entities without SpatialNode (e.g. projectiles)
+	auto view_without_spatial = registry.view<Movement, Position>(entt::exclude<StateAttackingTag, SpatialNode>);
+	for (auto entity : view_without_spatial) {
+		auto& movement = view_without_spatial.get<Movement>(entity);
+		auto& pos = view_without_spatial.get<Position>(entity);
 		
-		// Check if reached target
-		float dist = Vec2::distance(pos.value, movement.target);
-		if (dist < 0.5f) {
-			// Reached target, stop moving
-			movement.velocity = Vec2{0.0f, 0.0f};
-			movement.target = pos.value;
-		}
+		processMovement(movement, pos, dt);
 	}
 }
 
+bool GameplaySystem::processMovement(Movement& movement, Position& pos, float dt) {
+	if (movement.velocity.isZero()) {
+		return false; // Not moving
+	}
+	
+	// Store old position for overshoot check
+	Vec2 old_pos = pos.value;
+			
+	// Update position
+	pos.value += movement.velocity * dt;
+	
+	// If reached target or overshot, stop at target
+	float dist = Vec2::distance(pos.value, movement.target);
+	if (dist < 0.5f || Vec2::dot(movement.target - old_pos, movement.velocity) < 0.0f) {
+		// Reached target, stop moving
+		movement.velocity = Vec2{0.0f, 0.0f};
+		movement.target = pos.value;
+	}
+	
+	return true; // Entity was moved
+}
+
 void GameplaySystem::update_targeting(entt::registry& registry, float dt) {
+	ZoneScopedN("GameplaySystem::update_targeting");
 	_targeting_timer += dt;
 	
 	// Only run targeting periodically
@@ -154,6 +176,7 @@ void GameplaySystem::update_targeting(entt::registry& registry, float dt) {
 }
 
 void GameplaySystem::update_melee_combat(entt::registry& registry, float dt) {
+	ZoneScopedN("GameplaySystem::update_melee_combat");
 	auto view = registry.view<DirectDamage, AttackTarget, StateAttackingTag, Position, Faction>();
 	
 	for (auto entity : view) {
@@ -188,6 +211,7 @@ void GameplaySystem::update_melee_combat(entt::registry& registry, float dt) {
 }
 
 void GameplaySystem::update_ranged_combat(entt::registry& registry, float dt) {
+	ZoneScopedN("GameplaySystem::update_ranged_combat");
 	auto view = registry.view<ProjectileEmitter, AttackTarget, StateAttackingTag, Position, Faction>();
 	
 	for (auto entity : view) {
@@ -242,6 +266,7 @@ void GameplaySystem::update_ranged_combat(entt::registry& registry, float dt) {
 }
 
 void GameplaySystem::update_healer(entt::registry& registry, float dt) {
+	ZoneScopedN("GameplaySystem::update_healer");
 	auto view = registry.view<Healer, Position, Faction>();
 	
 	for (auto entity : view) {
@@ -255,27 +280,24 @@ void GameplaySystem::update_healer(entt::registry& registry, float dt) {
 		// Check if can heal
 		if (healer.timer >= healer.cooldown) {
 			// Find all allies in range
-			bool found_allies = false;
 			_spatial_grid.QueryRadius(pos.value, healer.range, [&](entt::entity ally) {
 				if (registry.valid(ally) && registry.all_of<Health>(ally)) {
 					auto& health = registry.get<Health>(ally);
 					// Only heal if not at full health
 					if (!health.IsFullHealth()) {
 						health.Heal(healer.heal_amount);
-						found_allies = true;
 					}
 				}
 			}, faction.id, true);
 
-			// Reset timer if we found allies to heal
-			if (found_allies) {
-				healer.timer = 0.0f;
-			}
+			// Reset timer
+			healer.timer = 0.0f;
 		}
 	}
 }
 
 void GameplaySystem::update_projectiles(entt::registry& registry, float dt) {
+	ZoneScopedN("GameplaySystem::update_projectiles");
 	auto view = registry.view<Projectile, Position, Movement>();
 	
 	std::vector<entt::entity> to_destroy;
@@ -321,6 +343,7 @@ void GameplaySystem::update_projectiles(entt::registry& registry, float dt) {
 }
 
 void GameplaySystem::update_death(entt::registry& registry, float dt) {
+	ZoneScopedN("GameplaySystem::update_death");
 	auto view = registry.view<Health>();
 	
 	std::vector<entt::entity> to_destroy;

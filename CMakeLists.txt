@@ -131,5 +131,14 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+# --- Tracy Profiler ---
+set(TRACY_ENABLE ON CACHE BOOL "" FORCE)
+FetchContent_Declare(
+	tracy
+	GIT_REPOSITORY https://github.com/wolfpld/tracy.git
+	GIT_TAG master
+)
+FetchContent_MakeAvailable(tracy)
+
 add_subdirectory(src)
 add_subdirectory(tests)

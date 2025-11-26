@@ -1,9 +1,1 @@
-* Add Tracy support to see the perfromance
-* Нормально реализовать отрисовку
 * Сделатать так, чтобы Unit_factory не читала json каждый раз
-
-
-So all faction selection logic is done outside and then I run query for each selected grid. 
-Make
-* Internal class that would be per faction grid. This class API should take cell rect, because all float to int rect calculations should be done once
-* SpatialGrid interface stays almost the same, add Insert() with faction

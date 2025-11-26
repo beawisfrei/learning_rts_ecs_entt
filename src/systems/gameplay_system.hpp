@@ -22,6 +22,9 @@ private:
 	void update_projectiles(entt::registry& registry, float dt);
 	void update_death(entt::registry& registry, float dt);
 
+	// Helper functions
+	bool processMovement(Movement& movement, Position& pos, float dt);
+
 	SpatialGrid& _spatial_grid;
 	float _targeting_timer = 0.0f;
 	const float _targeting_interval = 1.0f; // Run targeting every second

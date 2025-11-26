@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL3/SDL.h>
 #include "utils/gl_loader.hpp"
+#include "utils/profiler.hpp"
 #include <imgui.h>
 #include <backends/imgui_impl_sdl3.h>
 #include <backends/imgui_impl_opengl3.h>
@@ -111,6 +112,9 @@ int main(int argc, char* argv[]) {
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		
 		SDL_GL_SwapWindow(window);
+		
+		// Mark frame boundary for Tracy
+		FrameMark;
 	}
 
 	// Cleanup

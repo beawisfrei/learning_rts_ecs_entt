@@ -1,6 +1,7 @@
 #include "ui_system.hpp"
 #include "input_system.hpp"
 #include "../utils/time_controller.hpp"
+#include "../utils/profiler.hpp"
 #include <backends/imgui_impl_sdl3.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <cstring>
@@ -9,6 +10,7 @@
 #include <iomanip>
 
 void UISystem::Render(World& world, InputSystem& inputSystem, float dt, TimeController& timeController) {
+	ZoneScopedN("UISystem::Render");
 	// UI Frame
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL3_NewFrame();
@@ -22,6 +24,7 @@ void UISystem::Render(World& world, InputSystem& inputSystem, float dt, TimeCont
 }
 
 void UISystem::renderDebugWindow(World& world, float dt, TimeController& timeController) {
+	ZoneScopedN("UISystem::renderDebugWindow");
 	ImGui::Begin("Debug");
 	ImGui::Text("Application Average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::Text("Delta Time: %.3f ms", dt * 1000.0f);
@@ -70,7 +73,7 @@ void UISystem::renderDebugWindow(World& world, float dt, TimeController& timeCon
 	ImGui::Text("Spawn Settings");
 	const char* unit_types[] = {"Footman", "Archer", "Ballista", "Healer"};
 	ImGui::Combo("Unit Type", &_spawnTypeIdx, unit_types, 4);
-	ImGui::SliderInt("Faction", &_spawnFaction, 0, 7);
+	ImGui::SliderInt("Faction", &_spawnFaction, 0, MAX_FACTIONS - 1);
 	ImGui::SliderInt("Count", &_spawnCount, 1, 1000);
 	ImGui::Text("Hold S + Drag to spawn");
 	ImGui::Text("Hold D + Drag to delete");
@@ -135,6 +138,7 @@ void UISystem::renderDebugWindow(World& world, float dt, TimeController& timeCon
 }
 
 void UISystem::renderSelectionRect(World& world, InputSystem& inputSystem) {
+	ZoneScopedN("UISystem::renderSelectionRect");
 	if (!inputSystem.is_selecting()) {
 		return;
 	}
@@ -175,6 +179,7 @@ void UISystem::renderSelectionRect(World& world, InputSystem& inputSystem) {
 }
 
 void UISystem::renderSelectionWindow(World& world) {
+	ZoneScopedN("UISystem::renderSelectionWindow");
 	entt::registry& registry = world.GetRegistry();
 	const std::vector<Color>& factionColors = world.GetFactionColors();
 	

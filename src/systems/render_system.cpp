@@ -1,6 +1,7 @@
 #include "render_system.hpp"
 #include "../utils/gl_loader.hpp"
 #include "../utils/resource_loader.hpp"
+#include "../utils/profiler.hpp"
 #include "../components/components.hpp"
 #include <iostream>
 #include <array>
@@ -65,33 +66,11 @@ void main() {
 }
 )";
 
-// Line shader for world border
-const char* line_vertex_shader_src = R"(
-#version 330 core
-layout (location = 0) in vec2 aPos;
-
-uniform vec2 uOffset;
-uniform float uZoom;
-
-void main() {
-    vec2 worldPos = (aPos - uOffset) * uZoom;
-    vec2 ndc = worldPos / vec2(640.0, 360.0);
-    gl_Position = vec4(ndc, 0.0, 1.0);
-}
-)";
-
-const char* line_fragment_shader_src = R"(
-#version 330 core
-out vec4 FragColor;
-
-uniform vec4 uColor;
-
-void main() {
-    FragColor = uColor;
-}
-)";
 
 void RenderSystem::init(const nlohmann::json& config) {
+	// Initialize border renderer
+	_borderRenderer.Init();
+	
 	// Load Config params
 	if(config.contains("global")) {
 		_tile_size = config["global"].value("tile_size", 32);
@@ -100,10 +79,12 @@ void RenderSystem::init(const nlohmann::json& config) {
 		// Load world border color (default: green = 0.6)
 		if (config["global"].contains("world_border_color")) {
 			const auto& color = config["global"]["world_border_color"];
-			_border_color.r = color[0].get<int>() / 255.0f;
-			_border_color.g = color[1].get<int>() / 255.0f;
-			_border_color.b = color[2].get<int>() / 255.0f;
-			_border_color.a = color[3].get<int>() / 255.0f;
+			_borderRenderer.SetColor(
+				color[0].get<int>() / 255.0f,
+				color[1].get<int>() / 255.0f,
+				color[2].get<int>() / 255.0f,
+				color[3].get<int>() / 255.0f
+			);
 		}
 	}
 
@@ -211,91 +192,14 @@ void RenderSystem::init(const nlohmann::json& config) {
 			_unitUVs.push_back(uv);
 		}
 	}
-
-	// Initialize line rendering pipeline for world border
-	initLinePipeline();
-}
-
-void RenderSystem::initLinePipeline() {
-	// Compile line shaders
-	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &line_vertex_shader_src, NULL);
-	glCompileShader(vertexShader);
-
-	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &line_fragment_shader_src, NULL);
-	glCompileShader(fragmentShader);
-
-	_line_shader_program = glCreateProgram();
-	glAttachShader(_line_shader_program, vertexShader);
-	glAttachShader(_line_shader_program, fragmentShader);
-	glLinkProgram(_line_shader_program);
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
-	// Setup line VAO/VBO (will be updated dynamically)
-	glGenVertexArrays(1, &_line_vao);
-	glGenBuffers(1, &_line_vbo);
-
-	glBindVertexArray(_line_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, _line_vbo);
-
-	// Position attribute only
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
 }
 
 void RenderSystem::SetWorldBounds(int width, int height) {
-	_world_width = width;
-	_world_height = height;
-}
-
-void RenderSystem::renderWorldBorder(const Vec2& camOffset, float camZoom) {
-	if (_world_width <= 0 || _world_height <= 0) return;
-
-	glUseProgram(_line_shader_program);
-	glBindVertexArray(_line_vao);
-
-	int offsetLoc = glGetUniformLocation(_line_shader_program, "uOffset");
-	int zoomLoc = glGetUniformLocation(_line_shader_program, "uZoom");
-	int colorLoc = glGetUniformLocation(_line_shader_program, "uColor");
-
-	glUniform2f(offsetLoc, camOffset.x, camOffset.y);
-	glUniform1f(zoomLoc, camZoom);
-	
-	// Use border color from config
-	glUniform4f(colorLoc, _border_color.r, _border_color.g, _border_color.b, _border_color.a);
-
-	// Define border vertices (closed rectangle using LINE_LOOP)
-	float w = static_cast<float>(_world_width);
-	float h = static_cast<float>(_world_height);
-	
-	float vertices[] = {
-		0.0f, 0.0f,    // Bottom-left
-		w,    0.0f,    // Bottom-right
-		w,    h,       // Top-right
-		0.0f, h        // Top-left
-	};
-
-	// Update VBO with border vertices
-	glBindBuffer(GL_ARRAY_BUFFER, _line_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
-
-	// Set line width to 2 pixels
-	glLineWidth(2.0f);
-
-	// Draw the border as a line loop (closed rectangle)
-	glDrawArrays(GL_LINE_LOOP, 0, 4);
-
-	glBindVertexArray(0);
-	glUseProgram(0);
+	_borderRenderer.SetWorldBounds(static_cast<float>(width), static_cast<float>(height));
 }
 
 void RenderSystem::update(entt::registry& registry) {
+	ZoneScopedN("RenderSystem::update");
 	// Get Camera
 	auto camView = registry.view<Camera, MainCamera>();
 	Vec2 camOffset = {0.0f, 0.0f};
@@ -309,7 +213,7 @@ void RenderSystem::update(entt::registry& registry) {
 	}
 
 	// Render world border first (behind units)
-	renderWorldBorder(camOffset, camZoom);
+	_borderRenderer.Render(camOffset, camZoom);
 
 	// Setup unit rendering
 	glUseProgram(_shader_program);
@@ -329,14 +233,16 @@ void RenderSystem::update(entt::registry& registry) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Collect Instance Data
-	auto view = registry.view<Position, Unit>();
-	
-	// Clear the CPU buffer
-	_batchBuffer.clear();
-	// Reserve memory to avoid reallocations during loop
-	_batchBuffer.reserve(view.size_hint());
+	{
+		ZoneScopedN("RenderSystem::prepareBatch");
+		auto view = registry.view<Position, Unit>();
+		
+		// Clear the CPU buffer
+		_batchBuffer.clear();
+		// Reserve memory to avoid reallocations during loop
+		_batchBuffer.reserve(view.size_hint());
 
-	for (auto entity : view) {
+		for (auto entity : view) {
 		const auto& pos = view.get<Position>(entity);
 		const auto& unit = view.get<Unit>(entity);
 		
@@ -371,17 +277,21 @@ void RenderSystem::update(entt::registry& registry) {
 			color.r, color.g, color.b, color.a // Color
 		});
 	}
+	}
 
 	// Upload Data and Draw
-	if (!_batchBuffer.empty()) {
-		glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
+	{
+		ZoneScopedN("RenderSystem::drawBatch");
+		if (!_batchBuffer.empty()) {
+			glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
 		
-		// Orphan the buffer for driver optimization
-		glBufferData(GL_ARRAY_BUFFER, _batchBuffer.size() * sizeof(SpriteInstance), _batchBuffer.data(), GL_DYNAMIC_DRAW);
-		
-		// Single Draw Call
-		// Draw 4 vertices (the quad) X number of instances
-		glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, static_cast<GLsizei>(_batchBuffer.size()));
+			// Orphan the buffer for driver optimization
+			glBufferData(GL_ARRAY_BUFFER, _batchBuffer.size() * sizeof(SpriteInstance), _batchBuffer.data(), GL_DYNAMIC_DRAW);
+			
+			// Single Draw Call
+			// Draw 4 vertices (the quad) X number of instances
+			glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, static_cast<GLsizei>(_batchBuffer.size()));
+		}
 	}
 	
 	glBindVertexArray(0);

@@ -26,6 +26,7 @@ target_include_directories(RTS_Core PUBLIC
     ${imgui_SOURCE_DIR}
     ${RVO2_SOURCE_DIR}/src
     ${cereal_SOURCE_DIR}/include
+    ${tracy_SOURCE_DIR}/public
 )
 
 # Link dependencies for library
@@ -36,6 +37,7 @@ target_link_libraries(RTS_Core PUBLIC
     imgui
     RVO
     opengl32 # Standard Windows OpenGL library
+    TracyClient
 )
 
 # Create executable that links to library

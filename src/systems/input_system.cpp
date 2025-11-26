@@ -1,5 +1,6 @@
 #include "input_system.hpp"
 #include "../components/components.hpp"
+#include "../utils/profiler.hpp"
 #include "../world/world.hpp"
 #include <iostream>
 #include <cmath>
@@ -7,6 +8,7 @@
 #include <vector>
 
 void InputSystem::process_event(const SDL_Event& event) {
+	ZoneScopedN("InputSystem::process_event");
     if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
         if (event.button.button == SDL_BUTTON_LEFT) {
 			_left_mouse_down = true;
@@ -102,6 +104,7 @@ void InputSystem::issue_move_command(entt::registry& registry, const Vec2& click
 }
 
 void InputSystem::update(World& world, float dt) {
+	ZoneScopedN("InputSystem::update");
 	entt::registry& registry = world.GetRegistry();
 	SpatialGrid& spatial_grid = world.GetSpatialGrid();
 	

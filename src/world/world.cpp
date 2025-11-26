@@ -1,5 +1,6 @@
 #include "world.hpp"
 #include "../utils/resource_loader.hpp"
+#include "../utils/profiler.hpp"
 #include <cereal/archives/json.hpp>
 #include <cereal/types/map.hpp>
 #include <fstream>
@@ -54,10 +55,12 @@ bool World::Initialize(const nlohmann::json& config, bool enableRender) {
 }
 
 void World::Update(float dt) {
+	ZoneScopedN("World::Update");
 	_gameplaySystem->update(_registry, dt);
 }
 
 void World::Render() {
+	ZoneScopedN("World::Render");
 	if (_renderSystem) {
 		_renderSystem->update(_registry);
 	}

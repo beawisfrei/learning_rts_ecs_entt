@@ -4,6 +4,7 @@
 #include <nlohmann/json.hpp>
 #include <vector>
 #include "../components/components.hpp"
+#include "../utils/world_border_renderer.hpp"
 
 // Per-instance data structure matching shader layout
 struct SpriteInstance {
@@ -24,9 +25,6 @@ public:
 	const std::vector<Color>& GetFactionColors() const { return _faction_colors; }
 	
 private:
-	void initLinePipeline();
-	void renderWorldBorder(const Vec2& camOffset, float camZoom);
-
 	unsigned int _vao = 0;
 	unsigned int _vbo = 0;
 	unsigned int _shader_program = 0;
@@ -37,17 +35,8 @@ private:
 	unsigned int _instanceVBO = 0;
 	std::vector<SpriteInstance> _batchBuffer;
 	
-	// Line rendering resources
-	unsigned int _line_vao = 0;
-	unsigned int _line_vbo = 0;
-	unsigned int _line_shader_program = 0;
-	
-	// World bounds
-	int _world_width = 0;
-	int _world_height = 0;
-	
-	// World border color
-	Color _border_color = {0.0f, 0.6f, 0.0f, 1.0f};
+	// World border renderer
+	WorldBorderRenderer _borderRenderer;
 	
 	int _tile_size = 32;
 	float _unit_size = 32.0f;
