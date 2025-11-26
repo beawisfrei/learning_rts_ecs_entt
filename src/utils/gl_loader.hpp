@@ -57,6 +57,8 @@ typedef void (APIENTRY *PFNGLUNIFORM1FPROC) (GLint location, GLfloat v0);
 typedef void (APIENTRY *PFNGLUNIFORM2FPROC) (GLint location, GLfloat v0, GLfloat v1);
 typedef void (APIENTRY *PFNGLUNIFORM3FPROC) (GLint location, GLfloat v0, GLfloat v1, GLfloat v2);
 typedef void (APIENTRY *PFNGLUNIFORM4FPROC) (GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
+typedef void (APIENTRY *PFNGLVERTEXATTRIBDIVISORPROC) (GLuint index, GLuint divisor);
+typedef void (APIENTRY *PFNGLDRAWARRAYSINSTANCEDPROC) (GLenum mode, GLint first, GLsizei count, GLsizei instancecount);
 
 extern PFNGLGENBUFFERSPROC glGenBuffers;
 extern PFNGLBINDBUFFERPROC glBindBuffer;
@@ -85,6 +87,8 @@ extern PFNGLUNIFORM1FPROC glUniform1f;
 extern PFNGLUNIFORM2FPROC glUniform2f;
 extern PFNGLUNIFORM3FPROC glUniform3f;
 extern PFNGLUNIFORM4FPROC glUniform4f;
+extern PFNGLVERTEXATTRIBDIVISORPROC glVertexAttribDivisor;
+extern PFNGLDRAWARRAYSINSTANCEDPROC glDrawArraysInstanced;
 
 namespace RTS_GL {
     extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;

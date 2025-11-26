@@ -29,6 +29,8 @@ PFNGLUNIFORM1FPROC glUniform1f = nullptr;
 PFNGLUNIFORM2FPROC glUniform2f = nullptr;
 PFNGLUNIFORM3FPROC glUniform3f = nullptr;
 PFNGLUNIFORM4FPROC glUniform4f = nullptr;
+PFNGLVERTEXATTRIBDIVISORPROC glVertexAttribDivisor = nullptr;
+PFNGLDRAWARRAYSINSTANCEDPROC glDrawArraysInstanced = nullptr;
 
 namespace RTS_GL {
     PFNGLGENERATEMIPMAPPROC glGenerateMipmap = nullptr;
@@ -62,9 +64,11 @@ int load_gl_functions() {
     glUniform1f = (PFNGLUNIFORM1FPROC)SDL_GL_GetProcAddress("glUniform1f");
     glUniform2f = (PFNGLUNIFORM2FPROC)SDL_GL_GetProcAddress("glUniform2f");
     glUniform3f = (PFNGLUNIFORM3FPROC)SDL_GL_GetProcAddress("glUniform3f");
-    glUniform4f = (PFNGLUNIFORM4FPROC)SDL_GL_GetProcAddress("glUniform4f");
+	glUniform4f = (PFNGLUNIFORM4FPROC)SDL_GL_GetProcAddress("glUniform4f");
+	glVertexAttribDivisor = (PFNGLVERTEXATTRIBDIVISORPROC)SDL_GL_GetProcAddress("glVertexAttribDivisor");
+	glDrawArraysInstanced = (PFNGLDRAWARRAYSINSTANCEDPROC)SDL_GL_GetProcAddress("glDrawArraysInstanced");
 
-    RTS_GL::glGenerateMipmap = (PFNGLGENERATEMIPMAPPROC)SDL_GL_GetProcAddress("glGenerateMipmap");
+	RTS_GL::glGenerateMipmap = (PFNGLGENERATEMIPMAPPROC)SDL_GL_GetProcAddress("glGenerateMipmap");
     RTS_GL::glActiveTexture = (PFNGLACTIVETEXTUREPROC)SDL_GL_GetProcAddress("glActiveTexture");
 
     if (!glGenBuffers || !glCreateProgram || !glGetUniformLocation) {

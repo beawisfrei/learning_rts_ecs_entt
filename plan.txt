@@ -1,5 +1,3 @@
-* Доделать реализацию SpatialGrid
-  - Оптимизация Move (сейчас Add Remove а надо делать какой-то Swap)
 * Add Tracy support to see the perfromance
 * Нормально реализовать отрисовку
 * Сделатать так, чтобы Unit_factory не читала json каждый раз

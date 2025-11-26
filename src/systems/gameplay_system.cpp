@@ -3,6 +3,9 @@
 #include <iostream>
 
 void GameplaySystem::update(entt::registry& registry, float dt) {
+	if (dt == 0.0f)
+		return;
+	
 	update_movement(registry, dt);
 	update_targeting(registry, dt);
 	update_melee_combat(registry, dt);

@@ -4,37 +4,46 @@
 #include "../components/components.hpp"
 #include <iostream>
 #include <array>
+#include <cstddef>
 
-// Shader supporting textures and colors
+// Shader supporting hardware instancing
 const char* vertex_shader_src = R"(
 #version 330 core
+// Static quad geometry
 layout (location = 0) in vec2 aPos;
 layout (location = 1) in vec2 aTexCoord;
 
+// Per-instance attributes
+layout (location = 2) in vec2 aObjPos;
+layout (location = 3) in float aObjScale;
+layout (location = 4) in vec4 aUVRect;
+layout (location = 5) in vec4 aColor;
+
+// Global uniforms (constant for the whole frame)
 uniform vec2 uOffset;
 uniform float uZoom;
-uniform vec2 uObjPos;
-uniform vec2 uObjScale; 
-
-// UV rect: x, y, w, h (already normalized [0,1])
-uniform vec4 uUVRect;
 
 out vec2 TexCoord;
+out vec4 vColor;
 
 void main() {
-    // World position of the vertex
-    vec2 scaledPos = aPos * uObjScale;
-    vec2 worldPos = (scaledPos + uObjPos - uOffset) * uZoom;
+    // World position: instance position + scaled vertex
+    vec2 scaledPos = aPos * aObjScale;
+    vec2 worldPos = scaledPos + aObjPos;
+    
+    // Apply camera transform
+    vec2 screenPos = (worldPos - uOffset) * uZoom;
     
     // Screen space (NDC)
-    vec2 ndc = worldPos / vec2(640.0, 360.0); 
+    vec2 ndc = screenPos / vec2(640.0, 360.0);
     gl_Position = vec4(ndc, 0.0, 1.0);
     
     // Calculate TexCoord based on UV Rect
-    // aTexCoord is [0,1] for the full quad.
-    // We map 0->uUVRect.x, 1->uUVRect.x + uUVRect.w
-    TexCoord.x = uUVRect.x + (aTexCoord.x * uUVRect.z); // z is w
-    TexCoord.y = uUVRect.y + (aTexCoord.y * uUVRect.w); // w is h
+    // aTexCoord is [0,1] for the full quad
+    TexCoord.x = aUVRect.x + (aTexCoord.x * aUVRect.z); // u + x * w
+    TexCoord.y = aUVRect.y + (aTexCoord.y * aUVRect.w); // v + y * h
+    
+    vColor = aColor;
 }
 )";
 
@@ -42,22 +51,14 @@ const char* fragment_shader_src = R"(
 #version 330 core
 out vec4 FragColor;
 in vec2 TexCoord;
+in vec4 vColor;
 
 uniform sampler2D uTexture;
-uniform vec4 uColor;
 
 void main() {
     vec4 texColor = texture(uTexture, TexCoord);
-    // Simple tinting: Texture Color * Faction Color
-    // FragColor = texColor * uColor;
-    // For now, just show the faction color if texture is white/gray, or tint it.
-    // Since we don't have a real texture yet (or might have dummy one), let's mix.
-    // If texColor is white, it becomes uColor.
-    
-    // Use uColor directly if texture is not important yet, or multiply.
-    // FragColor = uColor; 
-    // Let's try tinting
-    FragColor = texColor * uColor;
+    // Tint texture with instance color
+    FragColor = texColor * vColor;
     
     // Alpha discard for transparency if needed
     if (FragColor.a < 0.1) discard;
@@ -151,6 +152,35 @@ void RenderSystem::init(const nlohmann::json& config) {
 	// TexCoord attribute
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+
+	// Setup Instance Buffer (Dynamic VBO)
+	glGenBuffers(1, &_instanceVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
+	// Allocate buffer for max 10k sprites initially
+	glBufferData(GL_ARRAY_BUFFER, 10000 * sizeof(SpriteInstance), nullptr, GL_DYNAMIC_DRAW);
+
+	// Instance Attributes Setup
+	GLsizei stride = static_cast<GLsizei>(sizeof(SpriteInstance));
+
+	// Location 2: ObjPos (vec2)
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)offsetof(SpriteInstance, posX));
+	glVertexAttribDivisor(2, 1); // Update once per instance
+
+	// Location 3: ObjScale (float)
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, stride, (void*)offsetof(SpriteInstance, scale));
+	glVertexAttribDivisor(3, 1);
+
+	// Location 4: UVRect (vec4)
+	glEnableVertexAttribArray(4);
+	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, stride, (void*)offsetof(SpriteInstance, u));
+	glVertexAttribDivisor(4, 1);
+
+	// Location 5: Color (vec4)
+	glEnableVertexAttribArray(5);
+	glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, stride, (void*)offsetof(SpriteInstance, r));
+	glVertexAttribDivisor(5, 1);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0); 
 	glBindVertexArray(0);
@@ -288,13 +318,9 @@ void RenderSystem::update(entt::registry& registry) {
 	// Bind Texture
 	::glBindTexture(GL_TEXTURE_2D, _atlas_texture);
 
+	// Set Global Uniforms (Only the ones that don't change per sprite)
 	int offsetLoc = glGetUniformLocation(_shader_program, "uOffset");
 	int zoomLoc = glGetUniformLocation(_shader_program, "uZoom");
-	int objPosLoc = glGetUniformLocation(_shader_program, "uObjPos");
-	int objScaleLoc = glGetUniformLocation(_shader_program, "uObjScale");
-	int uvRectLoc = glGetUniformLocation(_shader_program, "uUVRect");
-	int colorLoc = glGetUniformLocation(_shader_program, "uColor");
-
 	glUniform2f(offsetLoc, camOffset.x, camOffset.y);
 	glUniform1f(zoomLoc, camZoom);
 
@@ -302,8 +328,14 @@ void RenderSystem::update(entt::registry& registry) {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// Render all entities with Position and Unit components
+	// Collect Instance Data
 	auto view = registry.view<Position, Unit>();
+	
+	// Clear the CPU buffer
+	_batchBuffer.clear();
+	// Reserve memory to avoid reallocations during loop
+	_batchBuffer.reserve(view.size_hint());
+
 	for (auto entity : view) {
 		const auto& pos = view.get<Position>(entity);
 		const auto& unit = view.get<Unit>(entity);
@@ -325,22 +357,31 @@ void RenderSystem::update(entt::registry& registry) {
 			color.b = (color.b + 1.0f) * 0.5f;
 		}
 
-		glUniform2f(objPosLoc, pos.value.x, pos.value.y);
-		
 		// Projectiles should be smaller
 		float size = _unit_size;
 		if (registry.all_of<Projectile>(entity)) {
 			size = _unit_size * 0.3f;
 		}
-		glUniform2f(objScaleLoc, size, size);
-		
-		// uUVRect: x, y, w, h
-		glUniform4f(uvRectLoc, uv.x, uv.y, uv.w, uv.h);
-		
-		// Color
-		glUniform4f(colorLoc, color.r, color.g, color.b, color.a);
 
-		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+		// Pack Data into Struct
+		_batchBuffer.push_back({
+			pos.value.x, pos.value.y,	// Pos
+			size,						// Scale
+			uv.x, uv.y, uv.w, uv.h,		// UV
+			color.r, color.g, color.b, color.a // Color
+		});
+	}
+
+	// Upload Data and Draw
+	if (!_batchBuffer.empty()) {
+		glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
+		
+		// Orphan the buffer for driver optimization
+		glBufferData(GL_ARRAY_BUFFER, _batchBuffer.size() * sizeof(SpriteInstance), _batchBuffer.data(), GL_DYNAMIC_DRAW);
+		
+		// Single Draw Call
+		// Draw 4 vertices (the quad) X number of instances
+		glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, static_cast<GLsizei>(_batchBuffer.size()));
 	}
 	
 	glBindVertexArray(0);
